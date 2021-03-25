@@ -1,8 +1,25 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
 	purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				offwhite: '#F1F6F9',
+				blueGray: colors.blueGray,
+				coolGray: colors.coolGray,
+				emerald: colors.emerald,
+				teal: colors.teal,
+				cyan: colors.cyan,
+				lightBlue: colors.lightBlue,
+			},
+			fontFamily: {
+				Roboto: ['Roboto', 'sans-serif'],
+				Poppins: ['Poppins', 'sans-serif'],
+				OpenSans: ['"Open Sans"', 'sans-serif']
+			},
+		},
 	},
 	variants: {
 		extend: {},
