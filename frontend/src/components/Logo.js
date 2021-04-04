@@ -1,11 +1,12 @@
 import LogoSVG from '../assets/logo/FullLogo.svg';
+import {Link} from 'react-router-dom';
 
 const Logo = () => {
   return (
     <div>
-      <a href='./'>
+      <Link to='./'>
         <img src={LogoSVG} alt='Logo' className='inline h-8' />
-      </a>
+      </Link>
     </div>
   );
 }

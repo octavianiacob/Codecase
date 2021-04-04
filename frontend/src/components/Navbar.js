@@ -2,6 +2,7 @@ import Searchbar from './Searchbar'
 import Logo from './Logo'
 
 import {useState} from 'react';
+import {NavLink} from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -25,10 +26,10 @@ const Navbar = () => {
 			</div>
 			<div className={`px-6 pt-2 pb-4 md:flex md:p-0 ${isOpen ? 'block' : 'hidden'}`}>
 				<Searchbar/>
-				<a href='./explore' className='block p-2 font-normal text-white rounded hover:bg-gray-800'>Explore</a>
-				<a href='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Stats</a>
-				<a href='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Login</a>
-				<a href='./' className='block p-2 mt-1 font-normal text-white rounded md:px-3 md:py-2 md:font-semibold md:bg-cyan-300 md:text-blueGray-800 hover:bg-gray-800 md:hover:bg-offwhite md:mt-0 md:ml-2'>Sign Up</a>
+				<NavLink to='./explore' className='block p-2 font-normal text-white rounded hover:bg-gray-800'>Explore</NavLink>
+				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Stats</NavLink>
+				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Login</NavLink>
+				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded md:px-3 md:py-2 md:font-semibold md:bg-cyan-300 md:text-blueGray-800 hover:bg-gray-800 md:hover:bg-offwhite md:mt-0 md:ml-2'>Sign Up</NavLink>
 			</div>
 		</header>
 	);

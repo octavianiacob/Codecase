@@ -1,6 +1,8 @@
 import Navbar from '../components/Navbar'
 import hero from '../assets/hero-placeholder.png';
 
+import {Link} from 'react-router-dom';
+
 const Homepage = () => {
     return (
         <main className='bg-offwhite'>
@@ -19,14 +21,14 @@ const Homepage = () => {
                         </p>
                         <div className='mt-10 sm:flex sm:justify-center lg:justify-start'>
                             <div className='rounded-md shadow'>
-                                <a href='/explore' className='flex items-center justify-center w-full px-8 py-3 text-base font-medium border border-transparent rounded-md text-blueGray-800 hover:bg-white bg-cyan-300 md:py-4 md:text-lg md:px-10'>
+                                <Link to='/explore' className='flex items-center justify-center w-full px-8 py-3 text-base font-medium border border-transparent rounded-md text-blueGray-800 hover:bg-white bg-cyan-300 md:py-4 md:text-lg md:px-10'>
                                     Explore setups
-                                </a>
+                                </Link>
                             </div>
                             <div className='mt-3 rounded-md shadow sm:mt-0 sm:ml-3'>
-                                <a href='#' className='flex items-center justify-center w-full px-8 py-3 text-base font-medium bg-white border border-transparent rounded-md text-blueGray-800 hover:bg-gray-200 md:py-4 md:text-lg md:px-10'>
+                                <Link to='#' className='flex items-center justify-center w-full px-8 py-3 text-base font-medium bg-white border border-transparent rounded-md text-blueGray-800 hover:bg-gray-200 md:py-4 md:text-lg md:px-10'>
                                     Sign up
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
