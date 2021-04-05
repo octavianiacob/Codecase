@@ -1,5 +1,6 @@
-import Searchbar from './Searchbar'
-import Logo from './Logo'
+import Searchbar from './Searchbar';
+import Logo from './Logo';
+import AuthModal from './AuthModal';
 
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
@@ -10,6 +11,11 @@ const Navbar = () => {
 	const toggleMenuState = () => {
 		toggleMenu(!isOpen);
 	};
+
+	const [showModal, setShowModal] = useState(false);
+	const openModal = () => {
+		setShowModal(!showModal)
+	}
 
 	const menuIconClosed = (<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12'/>);
 	const menuIconOpen = (<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16'/>);
@@ -28,8 +34,17 @@ const Navbar = () => {
 				<Searchbar/>
 				<NavLink to='./explore' className='block p-2 font-normal text-white rounded hover:bg-gray-800'>Explore</NavLink>
 				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Stats</NavLink>
-				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Login</NavLink>
-				<NavLink to='./' className='block p-2 mt-1 font-normal text-white rounded md:px-3 md:py-2 md:font-semibold md:bg-cyan-300 md:text-blueGray-800 hover:bg-gray-800 md:hover:bg-offwhite md:mt-0 md:ml-2'>Sign Up</NavLink>
+				<button className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'
+					onClick={openModal}
+					type='button'>
+					Sign In
+				</button>
+				<button className='block p-2 mt-1 font-normal text-white rounded md:px-3 md:py-2 md:font-semibold md:bg-cyan-300 md:text-blueGray-800 hover:bg-gray-800 md:hover:bg-offwhite md:mt-0 md:ml-2'
+					onClick={openModal}
+					type='button'>
+					Register
+				</button>
+				<AuthModal showModal={showModal} setShowModal={setShowModal}/>
 			</div>
 		</header>
 	);

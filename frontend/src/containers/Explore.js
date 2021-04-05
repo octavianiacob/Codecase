@@ -1,5 +1,5 @@
 import SetupList from '../components/SetupsList';
-import Navbar from '../components/Navbar';
+import React from 'react';
 
 const Explore = () => {
 
@@ -16,10 +16,9 @@ const Explore = () => {
     const EMPTYSETUPS= [];
 
     return (
-		<main>
-            <Navbar/>
+		<React.Fragment>
             <SetupList items = {SETUPS} />
-		</main>
+		</React.Fragment>
 	);
 }
  

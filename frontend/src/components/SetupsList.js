@@ -4,14 +4,10 @@ import Setup from './Setup';
 const SetupsList = props => {
     if (props.items.length === 0) {
         return (
-            
             <div className='mt-20 text-center'>
                 <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
                     No setups found
-                        </h2>
-                <p className='max-w-2xl mx-auto mt-3 text-xl text-gray-500 sm:mt-4'>
-                    Be the first to upload your development setup for other users to see!
-                        </p>
+                </h2>
             </div>
         );
     }
