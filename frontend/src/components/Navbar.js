@@ -1,6 +1,7 @@
 import Searchbar from './Searchbar';
 import Logo from './Logo';
-import AuthModal from './AuthModal';
+import Modal from './Modal';
+import Authentication from './Authentication';
 
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
@@ -44,7 +45,9 @@ const Navbar = () => {
 					type='button'>
 					Register
 				</button>
-				<AuthModal showModal={showModal} setShowModal={setShowModal}/>
+				<Modal showModal={showModal} setShowModal={setShowModal}>
+					<Authentication/>
+				</Modal>
 			</div>
 		</header>
 	);
