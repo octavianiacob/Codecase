@@ -16,9 +16,9 @@ const Explore = () => {
     const EMPTYSETUPS= [];
 
     return (
-		<React.Fragment>
+		<>
             <SetupList items = {SETUPS} />
-		</React.Fragment>
+		</>
 	);
 }
  

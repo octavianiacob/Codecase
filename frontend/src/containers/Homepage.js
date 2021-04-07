@@ -24,7 +24,7 @@ const Homepage = () => {
                         </div>
                         <div className='mt-3 rounded-md shadow sm:mt-0 sm:ml-3'>
                             <Link to='#' className='flex items-center justify-center w-full px-8 py-3 text-base font-medium bg-white border border-transparent rounded-md text-blueGray-800 hover:bg-gray-200 md:py-4 md:text-lg md:px-10'>
-                                Sign up
+                                View stats
                             </Link>
                         </div>
                     </div>

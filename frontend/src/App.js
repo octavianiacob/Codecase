@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Homepage from './containers/Homepage';
 import Explore from './containers/Explore';
 import Dashboard from './containers/Dashboard';
+import UserProfile from './containers/UserProfile';
 
 const App = () => {
   return (
@@ -40,7 +41,7 @@ const App = () => {
 					</Route>
 
 					<Route path='/u/:userID' exact>
-						{/* <UserProfile />  */}
+						<UserProfile /> 
 					</Route>
 
 
