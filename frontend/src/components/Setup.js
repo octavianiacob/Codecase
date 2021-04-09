@@ -16,7 +16,7 @@ const Setup = props => {
                     <span>
                         Created by
                         </span>
-                    <Link to={`/users/${props.username}`}>
+                    <Link to={`/u/${props.username}`}>
                         <span className='text-blue-600'>
                             @{props.username}
                         </span>

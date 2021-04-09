@@ -9,7 +9,7 @@ const App = () => {
   return (
 		<Router>
 			<Navbar/>
-			<main>
+			<main className='bg-offwhite'>
 				<Switch>
 
 					<Route path='/' exact>
@@ -36,11 +36,11 @@ const App = () => {
 						{/* <NewSetup /> */}
 					</Route>
 
-					<Route path='/s/:setupID' exact>
+					<Route path='/s/:setupID'>
 						{/* <ExpandedSetup />  */}
 					</Route>
 
-					<Route path='/u/:userID' exact>
+					<Route path='/u/:userID'>
 						<UserProfile /> 
 					</Route>
 
