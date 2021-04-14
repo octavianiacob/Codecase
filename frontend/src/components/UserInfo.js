@@ -28,13 +28,13 @@ const ProfileInfo = props => {
   return ( 
     <div className="flex items-center self-start mt-4 ml-4 sm:m-0 sm:self-center">
       <div className="flex-shrink-0">
-        <img className="w-12 h-12 rounded-full" src={`${props.photoURL}`} alt="" />
+        <img className="w-16 h-16 rounded-full" src={`${props.photoURL}`} alt="" />
       </div>
       <div className="ml-4">
-        <h3 className="text-sm font-medium leading-6 text-gray-900 sm:text-lg">
+        <h3 className="text-lg font-medium leading-6 text-gray-900 sm:text-xl">
           {props.name}
         </h3>
-        <p className="text-xs text-blue-500 sm:text-sm">
+        <p className="text-blue-500 text-md sm:text-lg">
           <a href="#">
             @{props.username}
           </a>

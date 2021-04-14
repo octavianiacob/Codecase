@@ -1,5 +1,6 @@
 import SetupList from '../components/SetupsList';
 import React from 'react';
+import Filters from '../components/Filters';
 
 const Explore = () => {
 
@@ -17,6 +18,7 @@ const Explore = () => {
 
     return (
 		<>
+            <Filters items= {SETUPS} />
             <SetupList items = {SETUPS} />
 		</>
 	);

@@ -19,10 +19,15 @@ module.exports = {
 				Poppins: ['Poppins', 'sans-serif'],
 				OpenSans: ['"Open Sans"', 'sans-serif']
 			},
+			scale: {
+				'101': '1.01'
+			}
 		},
 	},
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [
+		require('@tailwindcss/forms'),
+	],
 };

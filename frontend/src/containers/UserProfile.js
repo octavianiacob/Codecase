@@ -1,7 +1,5 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 import SetupsList from '../components/SetupsList';
-import Card from '../components/Card';
 import UserInfo from '../components/UserInfo';
 
 import {useParams} from 'react-router-dom';

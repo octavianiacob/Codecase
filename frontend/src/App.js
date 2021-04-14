@@ -4,6 +4,7 @@ import Homepage from './containers/Homepage';
 import Explore from './containers/Explore';
 import Dashboard from './containers/Dashboard';
 import UserProfile from './containers/UserProfile';
+import ExpandedSetup from './containers/ExpandedSetup';
 
 const App = () => {
   return (
@@ -37,7 +38,7 @@ const App = () => {
 					</Route>
 
 					<Route path='/s/:setupID'>
-						{/* <ExpandedSetup />  */}
+						<ExpandedSetup /> 
 					</Route>
 
 					<Route path='/u/:userID'>
