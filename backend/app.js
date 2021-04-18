@@ -7,13 +7,13 @@ const HttpError = require('./models/http-error');
 
 const app = express();
 
-
-
 app.use(express.json());
 
-authRoutes(app);
+//Passport Google Auth Routes
+app.use('/auth/google', authRoutes);
 
-app.use('/api/setups', setupsRoutes); // /api/setups/...
+// Setups routes
+app.use('/api/setups', setupsRoutes);
 
 //This middleware runs if a request didn't get a response
 app.use((req, res, next) => {
