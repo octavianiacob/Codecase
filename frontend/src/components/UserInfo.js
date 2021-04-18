@@ -2,13 +2,13 @@ import Card from './Card';
 
 const UserInfo = props => {
 
-  return ( 
+  return (
     <Card className='m-3 sm:m-0'>
       <div className="px-4 py-5 bg-white border-b border-gray-200 sm:px-6">
         <div className="flex flex-col items-center justify-between -mt-4 -ml-4 sm:flex-row sm:items-center sm:flex-nowrap">
-          <ProfileInfo 
-            name={props.userData.firstName + ' ' + props.userData.lastName} 
-            username={props.userData.username} 
+          <ProfileInfo
+            name={props.userData.firstName + ' ' + props.userData.lastName}
+            username={props.userData.username}
             photoURL={props.userData.photoURL}
           />
           <Stats
@@ -16,16 +16,16 @@ const UserInfo = props => {
             totalLikes={props.userData.totalLikes}
             followersCount={props.userData.followersCount}
           />
-          <FollowButton/>
+          <FollowButton />
         </div>
       </div>
-      
+
     </Card>
-   );
+  );
 }
 
 const ProfileInfo = props => {
-  return ( 
+  return (
     <div className="flex items-center self-start mt-4 ml-4 sm:m-0 sm:self-center">
       <div className="flex-shrink-0">
         <img className="w-16 h-16 rounded-full" src={`${props.photoURL}`} alt="" />
@@ -41,9 +41,9 @@ const ProfileInfo = props => {
         </p>
       </div>
     </div>
-   );
+  );
 }
- 
+
 const Stats = props => {
   return (
     <div className='flex justify-center py-5 sm:p-0 sm:m-0'>
@@ -75,23 +75,19 @@ const Stats = props => {
           </div>
         </div>
       </div>
-    </div> 
+    </div>
   );
 }
 
 const FollowButton = () => {
-  return ( 
-    <div className="flex flex-shrink-0">
-      <button type="button" className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-        </svg>
-        <span>
-          Follow
-        </span>
-      </button>
-    </div>
-   );
+  return (
+    <button type="button" className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
+      <svg className="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+      </svg>
+        Follow
+    </button>
+  );
 }
- 
+
 export default UserInfo;

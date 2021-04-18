@@ -34,7 +34,8 @@ const Navbar = () => {
 			<div className={`px-6 pt-2 pb-4 md:flex md:p-0 ${isOpen ? 'block' : 'hidden'}`}>
 				<Searchbar/>
 				<NavLink to='/explore' className='block p-2 font-normal text-white rounded hover:bg-gray-800'>Explore</NavLink>
-				<NavLink to='/' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Stats</NavLink>
+				{/* <NavLink to='/' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Stats</NavLink> */}
+				<NavLink to='/dashboard' className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'>Dashboard</NavLink>
 				<button className='block p-2 mt-1 font-normal text-white rounded hover:bg-gray-800 md:mt-0 md:ml-2'
 					onClick={openModal}
 					type='button'>
