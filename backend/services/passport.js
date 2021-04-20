@@ -5,6 +5,17 @@ const mongoose = require('mongoose');
 
 const User = mongoose.model('users');
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then(user => {
+      done(null, user);
+    });
+});
+
 passport.use(
   new GoogleStrategy(
     {
@@ -13,16 +24,16 @@ passport.use(
       callbackURL: '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
-      // console.log('access token: ', accessToken);
-      // console.log('refresh token: ', refreshToken);
-      // console.log('profile: ', profile);
       User.findOne({ googleID: profile.id})
         .then((existingUser) => {
           if (existingUser) {
             //googleID is already in DB
+            done(null, existingUser);
           } else {
             // googleID is not in DB -> create new user
-            new User({ googleID: profile.id }).save();
+            new User({ googleID: profile.id })
+              .save()
+              .then(user => done(null, user));
           }
         });
     }

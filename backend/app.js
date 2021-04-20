@@ -1,22 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
 const keys = require('./config/keys');
+require('./models/user');
+require('./services/passport');
 
 const authRoutes = require('./routes/auth-routes');
 const setupsRoutes = require('./routes/setups-routes');
 const HttpError = require('./models/http-error');
-require('./models/user');
-require('./services/passport');
 
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 const app = express();
 
 app.use(express.json());
 
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+);
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-//Passport Google Auth Routes
-app.use('/auth/google', authRoutes);
+//Passport Auth Routes
+app.use(authRoutes);
 
 // Setups routes
 app.use('/api/setups', setupsRoutes);
