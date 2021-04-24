@@ -8,6 +8,7 @@ require('./services/passport');
 
 const authRoutes = require('./routes/auth-routes');
 const setupsRoutes = require('./routes/setups-routes');
+const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error');
 
 mongoose.connect(keys.mongoURI, {
@@ -40,6 +41,11 @@ const checkUserLoggedIn = (req, res, next) => {
 // Setups routes
 app.use('/api/setups', checkUserLoggedIn, setupsRoutes);
 //app.use('/api/setups', setupsRoutes);
+
+// User routes
+//app.use('/api/users', checkUserLoggedIn, usersRoutes);
+app.use('/api/users', usersRoutes);
+
 
 //This middleware runs if a request didn't get a response
 app.use((req, res, next) => {
