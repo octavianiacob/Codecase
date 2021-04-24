@@ -1,88 +1,143 @@
 const HttpError = require('../models/http-error');
-const { v4: uuid } = require('uuid');
+const { validationResult } = require('express-validator');
+const Setup = require('../models/setup');
 
-let DUMMY_SETUPS = [
-  { id: 's1', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's2', title: 'C++ Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'JohnDoe', languagesList: ['C++', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's3', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's4', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's5', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's6', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-  { id: 's7', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] }
-];
+const getAllSetups = async (req, res, next) => {
+  let setups;
+  try {
+    setups = await Setup.find();
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on getAllSetups', 500)
+    );
+  }
 
-const getAllSetups = (req, res, next) => {
-  res.json({ DUMMY_SETUPS });
+  //If request is valid, but no setups are found
+  if (!setups || setups.length === 0) {
+    return next(
+      new HttpError(`No setups found`)
+    )
+  }
+  res.json({ setups: setups.map(setup => setup.toObject({ getters: true })) });
 }
 
-const getSetupByID = (req, res, next) => {
+const getSetupByID = async (req, res, next) => {
   const setupID = req.params.sid;
-  const setup = DUMMY_SETUPS.find(s => {
-    return s.id === setupID;
+  let setup;
+  try {
+    setup = await Setup.findById(setupID);
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on getSetupByID', 500)
+    );
+  }
+  //If request is valid, but no setup is found
+  if (!setup) {
+    return next(
+      new HttpError(`Setup with ID ${setupID} not found.`, 404)
+    );
+  }
+  //Convert setup from mongoose object to JS object, remove '_' from '_id'
+  res.json({ setup: setup.toObject({ getters: true }) });
+};
+
+const getSetupsByUserID = async (req, res, next) => {
+  const userID = req.params.uid;
+
+  let setups;
+  try {
+    setups = await Setup.find({ author: userID });
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on getSetupsByUserID', 500)
+    );
+  }
+
+  //If request is valid, but no setups are found
+  if (!setups || setups.length === 0) {
+    return next(
+      new HttpError(`No setups found for user with ID ${userID}`)
+    )
+  }
+  res.json({ setups: setups.map(setup => setup.toObject({ getters: true })) });
+};
+
+const createSetup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new HttpError('Invalid input data', 422);
+  }
+  const { title, author } = req.body;
+
+  const createdSetup = new Setup({
+    title,
+    author
   });
 
-  //Error Handling
+  try {
+    await createdSetup.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Setup creation failed', 500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ setup: createdSetup });
+};
+
+const updateSetup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new HttpError('Invalid input data', 422);
+  }
+  const { title, lastUpdate } = req.body;
+  const setupID = req.params.sid;
+
+  let setup;
+  try {
+    setup = await Setup.findById(setupID);
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on updateSetup', 500)
+    );
+  }
+  //If request is valid, but no setup is found
   if (!setup) {
     return next(
       new HttpError(`Setup with ID ${setupID} not found.`, 404)
     );
   }
 
-  res.json({ setup });
-};
+  setup.title = title;
+  setup.lastUpdate = lastUpdate;
 
-const getSetupsByUserID = (req, res, next) => {
-  const userID = req.params.uid;
-
-  const setups = DUMMY_SETUPS.filter(s => {
-    return s.username === userID;
-  });
-
-  //Error Handling
-  if (!setups || setups.length === 0) {
+  try {
+    await setup.save();
+  } catch (err) { //If request is not valid
     return next(
-      new HttpError(`No setups found for user with ID ${userID}`)
-    )
+      new HttpError('Error on saving update on setup', 500)
+    );
   }
-  res.json({ setups });
-};
 
-const createSetup = (req, res, next) => {
-  const { title, lastUpdate, likes, username, languagesList, toolsList } = req.body;
-  const createdSetup = {
-    id: uuid(),
-    title,
-    lastUpdate,
-    likes,
-    username,
-    languagesList,
-    toolsList
-  };
-
-  DUMMY_SETUPS.push(createdSetup);
-  res.status(201).json({setup: createdSetup});
-};
-
-const updateSetup = (req, res, next) => {
-  const { title, lastUpdate, languagesList, toolsList } = req.body;
-  const setupID = req.params.sid;
-
-  const updatedSetup = { ... DUMMY_SETUPS.find(s => s.id === setupID)};
-  const setupIndex = DUMMY_SETUPS.findIndex(s => s.id === setupID);
-  updatedSetup.title = title;
-  updatedSetup.lastUpdate = lastUpdate;
-  updatedSetup.languagesList = languagesList;
-  updatedSetup.toolsList = toolsList;
-
-  DUMMY_SETUPS[setupIndex] = updatedSetup;
-
-  res.status(200).json({setup: updatedSetup});
+  res.status(200).json({ setup: setup.toObject({ getters: true }) });
 }
 
-const deleteSetup = (req, res, next) => {
+const deleteSetup = async (req, res, next) => {
   const setupID = req.params.sid;
-  DUMMY_SETUPS = DUMMY_SETUPS.filter(s => s.id !== setupID);
-  res.status(200).json({messages: 'Setup deleted.'});
+
+  let setup;
+  try {
+    setup = await Setup.findById(setupID);
+    await setup.remove();
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on deleteSetup', 500)
+    );
+  }
+  res.status(200).json({ messages: 'Setup deleted.' });
 }
 
 exports.getAllSetups = getAllSetups;

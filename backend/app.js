@@ -32,8 +32,14 @@ app.use(passport.session());
 //Passport Auth Routes
 app.use(authRoutes);
 
+// Check if user is logged in
+const checkUserLoggedIn = (req, res, next) => {
+  req.user ? next() : res.sendStatus(401);
+}
+
 // Setups routes
-app.use('/api/setups', setupsRoutes);
+app.use('/api/setups', checkUserLoggedIn, setupsRoutes);
+//app.use('/api/setups', setupsRoutes);
 
 //This middleware runs if a request didn't get a response
 app.use((req, res, next) => {
