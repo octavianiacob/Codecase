@@ -1,6 +1,8 @@
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const Setup = require('../models/setup');
+const User = require('../models/user');
+const mongoose = require('mongoose');
 
 const getAllSetups = async (req, res, next) => {
   let setups;
@@ -46,7 +48,7 @@ const getSetupsByUserID = async (req, res, next) => {
 
   let setups;
   try {
-    setups = await Setup.find({ author: userID });
+    setups = await Setup.find({ creator: userID });
   } catch (err) { //If request is not valid
     return next(
       new HttpError('Error on getSetupsByUserID', 500)
@@ -68,15 +70,34 @@ const createSetup = async (req, res, next) => {
     console.log(errors);
     throw new HttpError('Invalid input data', 422);
   }
-  const { title, author } = req.body;
+  const { title, creator } = req.body;
 
   const createdSetup = new Setup({
     title,
-    author
+    creator
   });
 
+  let user;
   try {
-    await createdSetup.save();
+    user = await User.findById(creator);
+  } catch (err) {
+    return next( new HttpError('Error on creator user data in createSetup', 500))
+  }
+  if(!user) {
+    return next( new HttpError('Could not find creator user ID'));
+  }
+
+  // Use sessions and transactions to update User's setups array and Setup creator property
+  // Changes commit only if all operations are successful 
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    // Save createdSetup to collection
+    await createdSetup.save({ session: session });
+    //Add createdSetup's ID to user array of setups
+    user.setups.push(createdSetup);
+    await user.save({ session: session });
+    await session.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       'Setup creation failed', 500
@@ -130,8 +151,28 @@ const deleteSetup = async (req, res, next) => {
 
   let setup;
   try {
-    setup = await Setup.findById(setupID);
-    await setup.remove();
+    //Populate - reference document stored in another collection and work with data in that existing document
+    setup = await Setup.findById(setupID).populate('creator');
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on deleteSetup', 500)
+    );
+  }
+
+  if(!setup) {
+    return next( new HttpError('Setup not found for the provided ID'))
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    //Remove setup from collection
+    await setup.remove({ session: session });
+    // Remove setup from setups array in creator user
+    setup.creator.setups.pull(setup);
+    await setup.creator.save({ session: session });
+    await session.commitTransaction();
+
   } catch (err) { //If request is not valid
     return next(
       new HttpError('Error on deleteSetup', 500)

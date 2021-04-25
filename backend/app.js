@@ -39,8 +39,8 @@ const checkUserLoggedIn = (req, res, next) => {
 }
 
 // Setups routes
-app.use('/api/setups', checkUserLoggedIn, setupsRoutes);
-//app.use('/api/setups', setupsRoutes);
+//app.use('/api/setups', checkUserLoggedIn, setupsRoutes);
+app.use('/api/setups', setupsRoutes);
 
 // User routes
 //app.use('/api/users', checkUserLoggedIn, usersRoutes);

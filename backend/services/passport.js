@@ -31,8 +31,6 @@ passport.use(
         return done(null, existingUser);
       }
       // googleID is not in DB -> create new user
-      console.log(profile);
-      console.log(profile.id, profile.name.givenName, profile.name.familyName, profile.photos[0].value);
       const user = await new User({
         googleID: profile.id,
         fullName: profile.displayName,
@@ -40,7 +38,8 @@ passport.use(
         lastName: profile.name.familyName,
         email: profile.emails[0].value,
         username: profile.displayName.split(' ').join('').toLowerCase(),
-        photoURL: profile.photos[0].value
+        photoURL: profile.photos[0].value,
+        setups: []
        }).save();
       done(null, user);
     }

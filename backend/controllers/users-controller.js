@@ -1,6 +1,7 @@
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const User = require('../models/user');
+const Setup = require('../models/setup');
 
 const getAllUsers = async (req, res, next) => {
   let users;
@@ -42,11 +43,6 @@ const getUserByID = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   console.log(errors);
-  //   throw new HttpError('Invalid input data', 422);
-  // }
   const { fullName, firstName, lastName, email, username, photoURL } = req.body;
   const userID = req.params.uid;
 
@@ -107,6 +103,14 @@ const deleteUser = async (req, res, next) => {
   let user;
   try {
     user = await User.findById(userID);
+    //Delete setups before deleting user
+    for await (setup of user.setups){
+      Setup.findByIdAndDelete(setup, (err, setup) => {
+        if(err) {
+          console.log(err);
+        }
+      });
+    }
     await user.remove();
   } catch (err) { //If request is not valid
     return next(
