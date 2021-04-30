@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 
 const Modal = (props) => {
   const modalRef = useRef();

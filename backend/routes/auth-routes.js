@@ -8,7 +8,7 @@ router.get('/auth/google', authController.step1);
 
 // 
 router.get('/auth/google/callback', authController.step2, (req, res) => {
-  res.redirect('/api/setups');
+  res.redirect('/dashboard');
 });
 
 router.get('/api/logout', (req, res) => {

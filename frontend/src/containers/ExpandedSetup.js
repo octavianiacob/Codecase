@@ -1,6 +1,6 @@
 import React from 'react';
-import SetupsList from '../components/SetupsList';
-import UserInfo from '../components/UserInfo';
+// import SetupsList from '../components/SetupsList';
+// import UserInfo from '../components/UserInfo';
 import Card from '../components/Card';
 
 import { useParams, Link } from 'react-router-dom';
@@ -95,6 +95,7 @@ const ExpandedSetup = () => {
     ],
   }
   const setupID = useParams().setupID;
+  console.log(setupID);
 
   return (
     <Card className='m-3 sm:m-10'>
@@ -147,7 +148,7 @@ const Summary = props => {
       <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt className="text-sm font-medium text-gray-500">
           Created on
-            </dt>
+        </dt>
         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
           {props.setup.createdOn}
         </dd>
@@ -156,7 +157,7 @@ const Summary = props => {
       <div className="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt className="text-sm font-medium text-gray-500">
           Last updated on:
-            </dt>
+        </dt>
         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
           {props.setup.lastUpdate}
         </dd>
@@ -180,13 +181,12 @@ const Summary = props => {
 }
 
 const LanguagesList = props => {
-  let key = 5000;
   let colors = ['bg-red-100', 'bg-yellow-100', 'bg-emerald-100', 'bg-green-100', 'bg-teal-100', 'bg-cyan-100', 'bg-blue-100', 'bg-purple-100']
   return (
     <div className={`py-5 ${props.className}`}>
       {props.setup.languagesList.map(lang => {
         return (
-          <button key={key = key + 1} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
+          <button key={lang.title + '-langListItem'} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
             {lang.title}
           </button>
         );
@@ -196,13 +196,12 @@ const LanguagesList = props => {
 }
 
 const LanguageInfo = props => {
-  let key = 5000;
 
   return (
     <div>
       {props.setup.languagesList.map(lang => {
         return (
-          <div className='my-5 overflow-hidden rounded-lg bg-gray-50'>
+          <div key={lang.title} className='my-5 overflow-hidden rounded-lg bg-gray-50'>
             <div className='px-4 py-5 sm:p-6'>
               <h2 className='text-xl font-medium leading-6 text-gray-900'>
                 {lang.title}
@@ -244,13 +243,12 @@ const LanguageInfo = props => {
 }
 
 const ToolsList = props => {
-  let key = 6000;
   let colors = ['bg-red-100', 'bg-yellow-100', 'bg-emerald-100', 'bg-green-100', 'bg-teal-100', 'bg-cyan-100', 'bg-blue-100', 'bg-purple-100']
   return (
     <div className={`py-5 ${props.className}`}>
       {props.setup.languagesList.map(tool => {
         return (
-          <button key={key = key + 1} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
+          <button key={tool.title + '-toolListItem'} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
             {tool.title}
           </button>
         );
@@ -260,13 +258,12 @@ const ToolsList = props => {
 }
 
 const ToolsInfo = props => {
-  let key = 6000;
 
   return (
     <div>
       {props.setup.toolsList.map(tool => {
         return (
-          <div className='my-5 overflow-hidden rounded-lg bg-gray-50'>
+          <div key={tool.title} className='my-5 overflow-hidden rounded-lg bg-gray-50'>
             <div className='px-4 py-5 sm:p-6'>
               <h2 className='text-xl font-medium leading-6 text-gray-900'>
                 {tool.title}

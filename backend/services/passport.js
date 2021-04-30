@@ -39,7 +39,8 @@ passport.use(
         email: profile.emails[0].value,
         username: profile.displayName.split(' ').join('').toLowerCase(),
         photoURL: profile.photos[0].value,
-        setups: []
+        setups: [],
+        likedSetups: []
        }).save();
       done(null, user);
     }

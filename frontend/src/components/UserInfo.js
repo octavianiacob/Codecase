@@ -35,9 +35,7 @@ const ProfileInfo = props => {
           {props.name}
         </h3>
         <p className="text-blue-500 text-md sm:text-lg">
-          <a href="#">
-            @{props.username}
-          </a>
+          @{props.username}
         </p>
       </div>
     </div>

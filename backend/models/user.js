@@ -9,7 +9,8 @@ const userSchema = new Schema({
   email: {type: String },
   username: { type: String, unique: true },
   photoURL: { type: String },
-  setups: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Setup' }]
+  setups: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Setup' }],
+  likedSetups: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Setup' }]
 });
 
 module.exports = mongoose.model('User', userSchema);

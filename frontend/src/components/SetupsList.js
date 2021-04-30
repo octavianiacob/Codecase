@@ -1,4 +1,3 @@
-import { useReducer } from 'react';
 import Setup from './Setup';
 import Card from './Card';
 

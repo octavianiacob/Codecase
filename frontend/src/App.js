@@ -1,4 +1,10 @@
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from './actions';
+
+
+
 import Navbar from './components/Navbar';
 import Homepage from './containers/Homepage';
 import Explore from './containers/Explore';
@@ -6,52 +12,31 @@ import Dashboard from './containers/Dashboard';
 import UserProfile from './containers/UserProfile';
 import ExpandedSetup from './containers/ExpandedSetup';
 
-const App = () => {
-  return (
-		<Router>
-			<Navbar/>
-			<main className='bg-offwhite'>
-				<Switch>
+class App extends Component {
+	componentDidMount() {
+		this.props.fetchUser();
+	}
 
-					<Route path='/' exact>
-						<Homepage />
-					</Route>
-
-					<Route path='/explore' exact>
-						<Explore />
-					</Route>
-
-					<Route path='/dashboard' exact>
-						<Dashboard />
-					</Route>
-
-					<Route path='/profile' exact>
-						{/* <Profile /> */}
-					</Route>
-
-					<Route path='/settings' exact>
-						{/* <Settings /> */}
-					</Route>
-
-					<Route path='/new' exact>
-						{/* <NewSetup /> */}
-					</Route>
-
-					<Route path='/s/:setupID'>
-						<ExpandedSetup /> 
-					</Route>
-
-					<Route path='/u/:userID'>
-						<UserProfile /> 
-					</Route>
-
-
-
-					<Redirect to='/' />
-				</Switch>
-			</main>
-		</Router>
-  );
+	render() {
+		return (
+			<Router>
+				<Navbar />
+				<main className='bg-offwhite'>
+					<Switch>
+						<Route exact path='/' component={Homepage} />
+						<Route exact path='/explore' component={Explore} />
+						<Route exact path='/dashboard' component={Dashboard} />
+						{/* <Route exact path='/profile' component={Profile} /> */}
+						{/* <Route exact path='/settings' component={Settings} /> */}
+						{/* <Route exact path='/new' component={NewSetup} /> */}
+						<Route path='/s/:setupID' component={ExpandedSetup} />
+						<Route path='/u/:userID' component={UserProfile} />
+						<Redirect to='/' />
+					</Switch>
+				</main>
+			</Router>
+		);
+	};
 }
 
-export default App;
+export default connect(null, actions)(App);

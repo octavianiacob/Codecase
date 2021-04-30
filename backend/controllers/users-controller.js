@@ -120,7 +120,12 @@ const deleteUser = async (req, res, next) => {
   res.status(200).json({ messages: 'User deleted.' });
 }
 
+const likeSetup = async (req, res, next) => {
+  const setupID = req.params.sid;
+}
+
 exports.getAllUsers = getAllUsers;
 exports.getUserByID = getUserByID;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
+exports.likeSetup = likeSetup;
