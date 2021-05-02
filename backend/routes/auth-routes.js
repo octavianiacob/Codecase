@@ -7,7 +7,9 @@ const authController = require('../controllers/auth-controller')
 router.get('/auth/google', authController.step1);
 
 // 
-router.get('/auth/google/callback', authController.step2, (req, res) => {
+router.get('/auth/google/callback',
+  authController.step2,
+  (req, res) => {
   res.redirect('/dashboard');
 });
 
