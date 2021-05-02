@@ -1,22 +1,28 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 
-const authController = require('../controllers/auth-controller')
+router.get('/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
 
-// 
-router.get('/auth/google', authController.step1);
-
-// 
+/* Middleware - Takes the code from the URL, then fetches the user profile from Google
+ then calls the callback function from the Google Strategy, then redirect to dashboard */
 router.get('/auth/google/callback',
-  authController.step2,
+  passport.authenticate('google'),
   (req, res) => {
-  res.redirect('/dashboard');
-});
+    res.redirect('/dashboard');
+  }
+);
 
-router.get('/api/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
+router.get('/api/logout', 
+  (req, res) => {
+    req.logout();
+    res.redirect('/');
+  }
+);
 
 router.get('/api/current_user', (req, res) => {
   res.send(req.user);
