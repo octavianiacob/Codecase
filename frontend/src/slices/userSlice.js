@@ -43,7 +43,6 @@ export function fetchUser() {
     try {
       const response = await fetch('/api/current_user');
       const data = await response.json();
-
       dispatch(getUserSuccess(data));
     } catch (error) {
       dispatch(getUserFailure());

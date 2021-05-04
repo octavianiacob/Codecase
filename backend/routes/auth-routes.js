@@ -25,7 +25,12 @@ router.get('/api/logout',
 );
 
 router.get('/api/current_user', (req, res) => {
-  res.send(req.user);
+  if(req?.user) {
+    res.send(req.user);
+  }
+  else {
+    res.send({});
+  }
 });
 
 module.exports = router;
