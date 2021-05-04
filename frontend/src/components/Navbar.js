@@ -3,13 +3,21 @@ import Logo from './Logo';
 import Modal from './Modal';
 import Authentication from './Authentication';
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser, userSelector } from '../slices/userSlice';
 
 
 const Navbar = () => {
-	const user = useSelector(state => state.auth);
+	//Initialize the redux hook
+	const dispatch = useDispatch();
+	const { user } = useSelector(userSelector);
+
+	//dispatch thunk when component first mounts
+	useEffect(() => {
+		dispatch(fetchUser())
+	}, [dispatch]);
 
 	const [isOpen, toggleMenu] = useState(false);
 	const toggleMenuState = () => {
@@ -68,12 +76,12 @@ const Navbar = () => {
 								<div>
 									<img
 										className="inline-block rounded-full h-9 w-9"
-										src={user.photoURL}
+										src={user?.photoURL}
 										alt=""
 									/>
 								</div>
 								<div className="ml-3">
-									<p className="font-medium text-offwhite group-hover:text-gray-900">{user.firstName}</p>
+									<p className="font-medium text-offwhite group-hover:text-gray-900">{user?.firstName}</p>
 								</div>
 							</div>
 						</NavLink>
