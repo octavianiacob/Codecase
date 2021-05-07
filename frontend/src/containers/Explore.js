@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import SetupsList from '../components/SetupsList';
 import Filters from '../components/Filters';
 import Pagination from '../components/Pagination';
+import Spinner from '../components/Spinner';
 
 const Explore = () => {
 
@@ -13,14 +16,13 @@ const Explore = () => {
   useEffect(() => {
     const fetchSetups = async () => {
       setLoading(true);
-      const res = await fetch('/api/setups/');
-      const data = await res.json();
-      setSetups(data.setups);
+      const req = await axios.get('/api/setups/');
+      const setups = req.data.setups;
+      setSetups(setups);
       setLoading(false);
     }
     fetchSetups();
   }, []);
-
   const indexOfLastSetup = currentPage * setupsPerPage;
   const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
   const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
@@ -28,9 +30,13 @@ const Explore = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
-      <Filters items={setups} />
-      <SetupsList setups={currentSetups} loading={loading} />
-      <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+      {!setups ? <Spinner/> :
+        <>
+          <Filters items={setups} />
+          <SetupsList setups={currentSetups} loading={loading} />
+          <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+        </>
+      }
     </>
   );
 }

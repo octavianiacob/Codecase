@@ -1,9 +1,10 @@
 import Setup from './Setup';
 import Card from './Card';
+import Spinner from './Spinner';
 
 const SetupsList = ({ setups, loading }) => {
   if (loading) {
-    return <h2>Loading...</h2>
+    return <Spinner/>
   }
   if (setups.length === 0) {
     return (
@@ -30,8 +31,8 @@ const SetupsList = ({ setups, loading }) => {
                   createdAt={new Date(setup.createdAt).toDateString()}
                   updatedAt={new Date(setup.updatedAt).toDateString()}
                   likes={setup.likes}
-                  creatorID={setup.creator}
-                  toolsIDs={setup.tools} 
+                  creator={setup.creator.username}
+                  tools={setup.tools} 
                 />
               );
             })}

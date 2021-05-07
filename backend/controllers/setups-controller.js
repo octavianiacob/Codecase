@@ -7,7 +7,9 @@ const mongoose = require('mongoose');
 const getAllSetups = async (req, res, next) => {
   let setups;
   try {
-    setups = await Setup.find();
+    setups = await Setup.find()
+      .populate({path: 'creator', select: 'username'})
+      .populate('tools')
   } catch (err) { //If request is not valid
     return next(
       new HttpError('Error on getAllSetups', 500)

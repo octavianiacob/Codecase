@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import Card from '../components/Card'
 import { Link } from 'react-router-dom';
+import Spinner from '../components/Spinner'
 
 
 const Dashboard = () => {
@@ -33,7 +34,7 @@ const Dashboard = () => {
 	return (
 		<>
 			<Header />
-			{!user ? <p>Loading</p> :
+			{!user ? <Spinner/> :
 				<SetupsTable isEditable title='My Setups' setups={userSetups} />
 			}
 			{error && <div>{error}</div> }
