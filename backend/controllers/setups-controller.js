@@ -50,9 +50,10 @@ const getSetupsByUserID = async (req, res, next) => {
   try {
     setups = await Setup.find({ creator: userID });
   } catch (err) { //If request is not valid
-    return next(
-      new HttpError('Error on getSetupsByUserID', 500)
-    );
+    // return next(
+    //   new HttpError('Error on getSetupsByUserID', 500)
+    // );
+    res.send({err: 'something went wrong'});
   }
 
   //If request is valid, but no setups are found
@@ -70,11 +71,15 @@ const createSetup = async (req, res, next) => {
     console.log(errors);
     throw new HttpError('Invalid input data', 422);
   }
-  const { title, creator } = req.body;
+  const { title, creator, description, tools, notes } = req.body;
 
   const createdSetup = new Setup({
     title,
-    creator
+    creator,
+    description,
+    tools,
+    notes,
+    likes: 0
   });
 
   let user;

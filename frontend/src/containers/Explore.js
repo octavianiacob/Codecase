@@ -1,27 +1,38 @@
-import SetupList from '../components/SetupsList';
-import React from 'react';
+import { useState, useEffect } from 'react';
+import SetupsList from '../components/SetupsList';
 import Filters from '../components/Filters';
+import Pagination from '../components/Pagination';
 
 const Explore = () => {
 
-    //Hardcoded sample data
-    const SETUPS = [
-        {id: 's1', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList:['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList:['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop']},
-        { id: 's2', title: 'C++ Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'JohnDoe', languagesList: ['C++', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop']},
-        { id: 's3', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-        { id: 's4', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-        { id: 's5', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-        { id: 's6', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-        { id: 's7', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] }
-    ];
-    //const EMPTYSETUPS= [];
+  const [setups, setSetups] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [setupsPerPage] = useState(9);
 
-    return (
-		<>
-            <Filters items= {SETUPS} />
-            <SetupList items = {SETUPS} />
-		</>
-	);
+  useEffect(() => {
+    const fetchSetups = async () => {
+      setLoading(true);
+      const res = await fetch('/api/setups/');
+      const data = await res.json();
+      setSetups(data.setups);
+      setLoading(false);
+    }
+    fetchSetups();
+  }, []);
+
+  const indexOfLastSetup = currentPage * setupsPerPage;
+  const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
+  const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  return (
+    <>
+      <Filters items={setups} />
+      <SetupsList setups={currentSetups} loading={loading} />
+      <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+    </>
+  );
 }
- 
+
 export default Explore;

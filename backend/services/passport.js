@@ -31,14 +31,18 @@ passport.use(
         return done(null, existingUser);
       }
       // googleID is not in DB -> create new user
+      console.log(profile);
       const user = await new User({
         googleID: profile.id,
-        fullName: profile.displayName,
         firstName: profile.name.givenName,
         lastName: profile.name.familyName,
         email: profile.emails[0].value,
         username: profile.displayName.split(' ').join('').toLowerCase(),
         photoURL: profile.photos[0].value,
+        country: '',
+        website: '',
+        github: '',
+        about: '',
         setups: [],
         likedSetups: []
        }).save();

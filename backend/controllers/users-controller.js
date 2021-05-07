@@ -43,7 +43,7 @@ const getUserByID = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-  const { fullName, firstName, lastName, email, username, photoURL } = req.body;
+  const { firstName, lastName, email, username, photoURL, country, website, github, about } = req.body;
   const userID = req.params.uid;
 
   let user;
@@ -59,11 +59,6 @@ const updateUser = async (req, res, next) => {
     return next(
       new HttpError(`User with ID ${userID} not found.`, 404)
     );
-  }
-
-
-  if (fullName) {
-    user.fullName = fullName;
   }
    
   if (firstName) {
@@ -85,6 +80,24 @@ const updateUser = async (req, res, next) => {
   if (photoURL) {
     user.photoURL = photoURL;
   }
+
+  if (country) {
+    user.country = country;
+  }
+
+  if (website) {
+    user.website = website;
+  }
+
+  if (github) {
+    user.github = github;
+  }
+
+  if (about) {
+    user.about = about;
+  }
+
+
 
   try {
     await user.save();

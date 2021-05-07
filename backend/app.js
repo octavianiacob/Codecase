@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const cors = require('cors');
 const keys = require('./config/keys');
 require('./models/user');
 require('./services/passport');
@@ -9,6 +10,7 @@ require('./services/passport');
 const authRoutes = require('./routes/auth-routes');
 const setupsRoutes = require('./routes/setups-routes');
 const usersRoutes = require('./routes/users-routes');
+const toolsRoutes = require('./routes/tools-routes');
 const HttpError = require('./models/http-error');
 
 mongoose.connect(keys.mongoURI, {
@@ -19,6 +21,9 @@ mongoose.connect(keys.mongoURI, {
 const app = express();
 
 app.use(express.json());
+
+//CORS
+app.use(cors());
 
 app.use(
   cookieSession({
@@ -33,6 +38,7 @@ app.use(passport.session());
 //Passport Auth Routes
 app.use(authRoutes);
 
+
 // Check if user is logged in
 const checkUserLoggedIn = (req, res, next) => {
   req.user ? next() : res.sendStatus(401);
@@ -45,6 +51,10 @@ app.use('/api/setups', setupsRoutes);
 // User routes
 //app.use('/api/users', checkUserLoggedIn, usersRoutes);
 app.use('/api/users', usersRoutes);
+
+// Tools routes
+//app.use('/api/tools', checkUserLoggedIn, toolsRoutes);
+app.use('/api/tools', toolsRoutes);
 
 
 //This middleware runs if a request didn't get a response

@@ -5,20 +5,7 @@ const { check } = require('express-validator');
 const setupsController = require('../controllers/setups-controller')
 
 // GET ALL SETUPS
-router.get(
-  '/',
-  [
-    check('title')
-      .not()
-      .isEmpty(),
-    check('languagesList')
-      .not()
-      .isEmpty(),
-    check('toolsList')
-      .not()
-      .isEmpty()
-  ],
-  setupsController.getAllSetups);
+router.get('/', setupsController.getAllSetups);
 
 // POST NEW SETUP
 router.post('/', setupsController.createSetup);
