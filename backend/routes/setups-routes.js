@@ -13,6 +13,9 @@ router.post('/', setupsController.createSetup);
 // GET ALL SETUPS OF THE SPECIFIED USER
 router.get('/user/:uid', setupsController.getSetupsByUserID);
 
+// GET ALL LIKED SETUPS OF THE SPECIFIED USER
+router.get('/liked/:uid', setupsController.getLikedSetupsByUserID);
+
 // GET A SPECIFIC SETUP BASED ON SETUPID
 router.get('/:sid', setupsController.getSetupByID);
 
@@ -28,6 +31,9 @@ router.patch(
 
 // DELETE AN EXISTING SETUP
 router.delete('/:sid', setupsController.deleteSetup);
+
+//LIKE A SETUP
+router.patch('/like/:sid/from/:uid', setupsController.likeSetup);
 
 
 

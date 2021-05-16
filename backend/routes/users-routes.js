@@ -16,6 +16,4 @@ router.patch('/:uid', usersController.updateUser);
 // DELETE AN EXISTING SETUP
 router.delete('/:uid', usersController.deleteUser);
 
-router.patch('/:sid', usersController.likeSetup);
-
 module.exports = router;

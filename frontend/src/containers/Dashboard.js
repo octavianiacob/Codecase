@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { userSelector } from '../slices/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { userSelector, fetchUser } from '../slices/userSlice';
 import axios from 'axios';
 
 import Card from '../components/Card'
@@ -12,32 +12,45 @@ const Dashboard = () => {
 
 	const { user } = useSelector(userSelector);
 	const [userSetups, setUserSetups] = useState([]);
+	const [likedSetups, setLikedSetups] = useState([]);
+
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const fetchSetups = async () => {
-			if(user) {	
-			try {
+			if (user) {
+				try {
 					const req = await axios.get(`/api/setups/user/${user?._id}`);
-					const setups = req.data.setups;
-					setUserSetups(setups);
+					setUserSetups(req.data.setups);
 
 				} catch (err) {
 					setError(err.response.data.message);
 				}
-			} else {
-		} 
-	}
+
+				try {
+					const req = await axios.get(`/api/setups/liked/${user?._id}`);
+					setLikedSetups(req.data.likedSetups);
+
+				} catch (err) {
+					setError(err.response.data.message);
+				}
+			}
+		}
 		fetchSetups();
 	}, [user]);
+
+
 
 	return (
 		<>
 			<Header />
-			{!user ? <Spinner/> :
-				<SetupsTable isEditable title='My Setups' setups={userSetups} />
+			{!user ? <Spinner /> :
+				<>
+					<SetupsTable isEditable title='My Setups' setups={userSetups} />
+					<SetupsTable title='Liked Setups' setups={likedSetups} user={user} />
+				</>
 			}
-			{error && <div>{error}</div> }
+			{error && <div>{error}</div>}
 		</>
 
 	);
@@ -50,12 +63,14 @@ const Header = () => {
 				<div className="flex flex-col items-center justify-between -mt-4 -ml-4 sm:flex-row sm:items-center sm:flex-nowrap">
 					<h1 className='text-xl font-semibold sm:text-3xl'>Dashboard</h1>
 					<div className='flex flex-row mt-5 sm:justify-center sm:mt-0'>
-						<button type="button" className="inline-flex items-center px-4 py-2 mr-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm sm:text-sm hover:bg-gray-50">
-							<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-							</svg>
+						<Link to='/new'>
+							<button type="button" className="inline-flex items-center px-4 py-2 mr-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm sm:text-sm hover:bg-gray-50">
+								<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+								</svg>
         			New Setup
     				</button>
+						</Link>
 						<Link to='/profile'>
 							<button type="button" className="inline-flex items-center px-4 py-2 mx-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm sm:text-sm hover:bg-gray-50">
 								<svg className="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -71,7 +86,7 @@ const Header = () => {
 	);
 }
 
-const SetupsTable = ({ isEditable, title, setups }) => {
+const SetupsTable = ({ isEditable, title, setups, user }) => {
 
 	return (
 		<div className='m-3 lg:mx-20 sm:my-10'>
@@ -106,7 +121,7 @@ const SetupsTable = ({ isEditable, title, setups }) => {
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200">
 									{setups.map((setup) => (
-										<SetupRow key={setup?._id} setup={setup} isEditable={isEditable} />
+										<SetupRow key={setup?._id} setup={setup} isEditable={isEditable} user={user} />
 									))}
 								</tbody>
 							</table>
@@ -118,8 +133,9 @@ const SetupsTable = ({ isEditable, title, setups }) => {
 	);
 }
 
-const SetupRow = ({ setup, isEditable }) => {
+const SetupRow = ({ setup, isEditable, user }) => {
 	const [creator, setCreator] = useState();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const fetchCreator = async () => {
@@ -134,6 +150,14 @@ const SetupRow = ({ setup, isEditable }) => {
 		fetchCreator();
 	}, [setup?.creator]);
 
+	const unlikeSetup = async () => {
+		if (user) {
+			const req = await axios.patch(`/api/setups/like/${setup._id}/from/${user._id}`);
+			if (req.data.result === 'decrement') {
+				dispatch(fetchUser());
+			}
+		}
+	}
 	return (
 		<tr>
 			<td className="px-6 py-4 whitespace-nowrap">
@@ -159,7 +183,7 @@ const SetupRow = ({ setup, isEditable }) => {
           	</Link>
 					</>
 					:
-					<button type="button" className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-red-400 hover:text-gray-700">
+					<button onClick={unlikeSetup} type="button" className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-red-400 hover:text-gray-700">
 						<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 							<path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
 						</svg>

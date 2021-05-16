@@ -81,7 +81,8 @@ const createSetup = async (req, res, next) => {
     description,
     tools,
     notes,
-    likes: 0
+    likes: 0,
+    usersThatLiked: []
   });
 
   let user;
@@ -188,9 +189,108 @@ const deleteSetup = async (req, res, next) => {
   res.status(200).json({ messages: 'Setup deleted.' });
 }
 
+const likeSetup = async (req, res, next) => {
+  const setupID = req.params.sid
+  const userID = req.params.uid
+
+  let setup;
+  try {
+    setup = await Setup.findById(setupID);
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on likeSetup', 500)
+    );
+  }
+  //If request is valid, but no setup is found
+  if (!setup) {
+    return next(
+      new HttpError(`Setup with ID ${setupID} not found.`, 404)
+    );
+  }
+
+  let user;
+  try {
+    user = await User.findById(userID);
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on likeSetup', 500)
+    );
+  }
+  //If request is valid, but no setup is found
+  if (!user) {
+    return next(
+      new HttpError(`User with ID ${setupID} not found.`, 404)
+    );
+  }
+
+  let result;
+  if (setup.usersThatLiked.includes(userID)) {
+    setup.likes--;
+    let userIndex = setup.usersThatLiked.indexOf(userID);
+    if(userIndex !== -1) {
+      setup.usersThatLiked.splice(userIndex, 1);
+    }
+    //setup.usersThatLiked = setup.usersThatLiked.filter(id => id !== userID);
+
+    let setupIndex = user.likedSetups.indexOf(setupID)
+    if (setupIndex !== -1) {
+      user.likedSetups.splice(setupIndex, 1);
+    }
+    //user.likedSetups = user.likedSetups.filter(id => id !== setupID);
+    result = 'decrement';
+  }
+  else {
+    setup.likes++;
+    setup.usersThatLiked.push(userID);
+    user.likedSetups.push(setupID);
+    result = 'increment';
+  }
+
+  try {
+    await setup.save();
+    await user.save();
+  } catch (err) { //If request is not valid
+    return next(
+      new HttpError('Error on saving update on setup', 500)
+    );
+  }
+
+  res.status(200).json({ 
+    setup: setup.toObject({ getters: true }),
+    user: user.toObject({ getters: true }),
+    result: result
+  });
+}
+
+const getLikedSetupsByUserID = async (req, res, next) => {
+  const userID = req.params.uid;
+
+  let likedSetups;
+  try {
+    likedSetups = await Setup.find({ usersThatLiked: userID });
+  } catch (err) { //If request is not valid
+    // return next(
+    //   new HttpError('Error on getSetupsByUserID', 500)
+    // );
+    res.send({ err: 'something went wrong' });
+  }
+
+  //If request is valid, but no setups are found
+  if (!likedSetups || likedSetups.length === 0) {
+    return next(
+      new HttpError(`No liked setups found for user with ID ${userID}`)
+    )
+  }
+  res.json({ likedSetups: likedSetups.map(setup => setup.toObject({ getters: true })) });
+};
+
+
+
 exports.getAllSetups = getAllSetups;
 exports.getSetupByID = getSetupByID;
 exports.getSetupsByUserID = getSetupsByUserID;
 exports.createSetup = createSetup;
 exports.updateSetup = updateSetup;
 exports.deleteSetup = deleteSetup;
+exports.likeSetup = likeSetup;
+exports.getLikedSetupsByUserID = getLikedSetupsByUserID;

@@ -31,6 +31,7 @@ const SetupsList = ({ setups, loading }) => {
                   createdAt={new Date(setup.createdAt).toDateString()}
                   updatedAt={new Date(setup.updatedAt).toDateString()}
                   likes={setup.likes}
+                  usersThatLiked={setup.usersThatLiked}
                   creator={setup.creator.username}
                   tools={setup.tools} 
                 />

@@ -1,13 +1,35 @@
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { userSelector, fetchUser } from '../slices/userSlice';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Card from './Card';
 
-const Setup = ({ id, title, createdAt, updatedAt, likes, creator, tools }) => {
+const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator, tools }) => {
+
+	const dispatch = useDispatch();
+	const { user } = useSelector(userSelector);
+	const [liked, setLiked] = useState(user.likedSetups.includes(id) ? true : false);
+
+	const likeSetup = async (isLiked) => {
+		if(user) {
+			const req = await axios.patch(`/api/setups/like/${id}/from/${user._id}`);
+			if(req.data.result === 'increment') {
+				dispatch(fetchUser());
+				setLiked(true);
+			}
+			if (req.data.result === 'decrement') {
+				dispatch(fetchUser());
+				setLiked(false);
+			}
+		}
+	}
 
 	let colors = ['bg-red-100', 'bg-yellow-100', 'bg-emerald-100', 'bg-green-100', 'bg-teal-100', 'bg-cyan-100', 'bg-blue-100', 'bg-purple-100'];
 	return (
 		<>
-			<Card className='transition duration-500 transform hover:scale-101'>
+			<Card key={id} className='transition duration-500 transform hover:scale-101'>
 				<div className='block mt-2'>
 					<Link to={`/s/${id}`}>
 						<p className='text-xl font-semibold text-gray-900'>
@@ -53,19 +75,14 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, creator, tools }) => {
 				</div>
 				<div className='flex justify-center mt-4'>
 					<span className="rounded-md shadow-sm">
-						<button type="button" className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-red-400">
-							<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-								<path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-							</svg>
-						</button>
 						<Link to={`/s/${id}`}>
-							<button type="button" className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-red-400">
+							<button type="button" className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-red-400">
 								<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 									<path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
 								</svg>
 							</button>
 						</Link>
-						<button type="button" className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-red-400">
+						<button onClick={likeSetup} type="button" className={`focus:outline-none relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium ${liked ? 'text-red-400' : 'text-gray-700'} bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-red-400`}>
 							<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 								<path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
 							</svg>
