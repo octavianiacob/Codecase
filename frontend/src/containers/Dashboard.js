@@ -39,15 +39,15 @@ const Dashboard = () => {
 		fetchSetups();
 	}, [user]);
 
-
-
 	return (
 		<>
 			<Header />
 			{!user ? <Spinner /> :
 				<>
-					<SetupsTable isEditable title='My Setups' setups={userSetups} />
-					<SetupsTable title='Liked Setups' setups={likedSetups} user={user} />
+					{userSetups.length === 0 ? <Card>You have not created any setups.</Card> :
+						<SetupsTable isEditable title='My Setups' setups={userSetups} user={user} /> }
+					{likedSetups.length === 0 ? <Card>You have no liked setups.</Card> :
+					<SetupsTable title='Liked Setups' setups={likedSetups} user={user} /> }
 				</>
 			}
 			{error && <div>{error}</div>}
@@ -158,6 +158,17 @@ const SetupRow = ({ setup, isEditable, user }) => {
 			}
 		}
 	}
+
+	const deleteSetup = async () => {
+		console.log(user);
+		if (user && user._id === creator._id) {
+			const req = await axios.delete(`/api/setups/${setup._id}`);
+			if (req.data.messages === 'Setup deleted.') {
+				dispatch(fetchUser());
+			}
+		}
+	}
+
 	return (
 		<tr>
 			<td className="px-6 py-4 whitespace-nowrap">
@@ -178,9 +189,9 @@ const SetupRow = ({ setup, isEditable, user }) => {
 						<Link to='/' className="pr-3 text-blue-500 hover:text-gray-900">
 							Edit
           	</Link>
-						<Link to='/' className="pl-3 text-red-500 hover:text-gray-900">
+						<button onClick={deleteSetup} type="button" className="pl-3 text-red-500 hover:text-gray-900">
 							Delete
-          	</Link>
+          	</button>
 					</>
 					:
 					<button onClick={unlikeSetup} type="button" className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-red-400 hover:text-gray-700">

@@ -59,7 +59,7 @@ const getSetupsByUserID = async (req, res, next) => {
   }
 
   //If request is valid, but no setups are found
-  if (!setups || setups.length === 0) {
+  if (!setups) {
     return next(
       new HttpError(`No setups found for user with ID ${userID}`)
     )
@@ -269,14 +269,14 @@ const getLikedSetupsByUserID = async (req, res, next) => {
   try {
     likedSetups = await Setup.find({ usersThatLiked: userID });
   } catch (err) { //If request is not valid
-    // return next(
-    //   new HttpError('Error on getSetupsByUserID', 500)
-    // );
+    return next(
+      new HttpError('Error on getSetupsByUserID', 500)
+    );
     res.send({ err: 'something went wrong' });
   }
 
   //If request is valid, but no setups are found
-  if (!likedSetups || likedSetups.length === 0) {
+  if (!likedSetups) {
     return next(
       new HttpError(`No liked setups found for user with ID ${userID}`)
     )
