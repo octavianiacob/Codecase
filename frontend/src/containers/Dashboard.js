@@ -13,7 +13,6 @@ const Dashboard = () => {
 	const { user } = useSelector(userSelector);
 	const [userSetups, setUserSetups] = useState([]);
 	const [likedSetups, setLikedSetups] = useState([]);
-
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
