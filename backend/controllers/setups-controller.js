@@ -29,7 +29,9 @@ const getSetupByID = async (req, res, next) => {
   const setupID = req.params.sid;
   let setup;
   try {
-    setup = await Setup.findById(setupID);
+    setup = await Setup.findById(setupID)
+      .populate({ path: 'creator', select: 'username' })
+      .populate('tools');
   } catch (err) { //If request is not valid
     return next(
       new HttpError('Error on getSetupByID', 500)
