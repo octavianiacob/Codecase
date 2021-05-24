@@ -113,8 +113,8 @@ const SetupsTable = ({ isEditable, title, setups, user }) => {
 										<th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
 											Likes
                   		</th>
-										<th className="relative px-6 py-3">
-											<span className="sr-only">Edit</span>
+										<th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase">
+											Actions
 										</th>
 									</tr>
 								</thead>
@@ -159,7 +159,6 @@ const SetupRow = ({ setup, isEditable, user }) => {
 	}
 
 	const deleteSetup = async () => {
-		console.log(user);
 		if (user && user._id === creator._id) {
 			const req = await axios.delete(`/api/setups/${setup._id}`);
 			if (req.data.messages === 'Setup deleted.') {
@@ -185,7 +184,7 @@ const SetupRow = ({ setup, isEditable, user }) => {
 			<td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
 				{isEditable ?
 					<>
-						<Link to='/' className="pr-3 text-blue-500 hover:text-gray-900">
+						<Link to={`/edit/${setup._id}`} className="pr-3 text-blue-500 hover:text-gray-900">
 							Edit
           	</Link>
 						<button onClick={deleteSetup} type="button" className="pl-3 text-red-500 hover:text-gray-900">

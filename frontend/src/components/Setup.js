@@ -10,12 +10,12 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 
 	const dispatch = useDispatch();
 	const { user } = useSelector(userSelector);
-	const [liked, setLiked] = useState(user.likedSetups.includes(id) ? true : false);
+	const [liked, setLiked] = useState(user?.likedSetups.includes(id) ? true : false);
 
 	const likeSetup = async (isLiked) => {
-		if(user) {
+		if (user) {
 			const req = await axios.patch(`/api/setups/like/${id}/from/${user._id}`);
-			if(req.data.result === 'increment') {
+			if (req.data.result === 'increment') {
 				dispatch(fetchUser());
 				setLiked(true);
 			}
@@ -63,17 +63,22 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 				</div>
 				<div className='mt-3'>
 					<p className='font-semibold'>Tools and Technologies used:</p>
-					<div>
-						{tools.map(tool => {
+					<div className='h-20'>
+						{tools.slice(0, 8).map(tool => {
 							return (
 								<button key={tool._id} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
 									{tool.title}
 								</button>
 							);
 						})}
+						{tools.length <= 8 ? null :
+							<Link to={`/s/${id}`} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
+								...
+							</Link>
+						}
 					</div>
 				</div>
-				<div className='flex justify-center mt-4'>
+				<div className='flex justify-center mt-10 sm:mt-4'>
 					<span className="rounded-md shadow-sm">
 						<Link to={`/s/${id}`}>
 							<button type="button" className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-red-400">
