@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, FieldArray, Form } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, fetchUser } from '../slices/userSlice';
 import axios from 'axios';
@@ -54,9 +54,10 @@ const NewSetup = () => {
 
         onSubmit={(values) => {
           values.tools = toolsList.map((tool => tool.value));
+          console.log(values);
           axios.post(`/api/setups`, values);
           dispatch(fetchUser());
-          window.location.href = '/dashboard';
+          //window.location.href = '/dashboard';
         }}
       >
         <Form className="max-w-6xl px-5 m-10 mx-auto space-y-8 divide-y divide-gray-200">
@@ -87,7 +88,7 @@ const NewSetup = () => {
                     Description
                 </label>
                   <div className="mt-1 sm:mt-0 sm:col-span-2">
-                    <textarea
+                    <Field as='textarea'
                       id="description"
                       name="description"
                       rows={3}
@@ -103,40 +104,45 @@ const NewSetup = () => {
                 <h3 className="text-lg font-medium leading-6 text-gray-900">Tools and Technologies</h3>
                 <p className="max-w-2xl mt-1 text-sm text-gray-500">Add all apps, tools, programming languages, frameworks and libraries you use in development</p>
               </div>
-              <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
-                <div className="pt-3 sm:border-t sm:border-gray-200 sm:pt-5">
-                  {toolsList.length < 1 ? null :
-                    toolsList.map((tool) => (
-                      <div key={tool.value} className="my-5 overflow-hidden bg-white shadow sm:rounded-lg">
-                        <div className="px-4 py-5 sm:px-6">
-                          <h3 className="text-lg font-medium leading-6 text-gray-900">{tool.label}</h3>
-                        </div>
-                        <div className="border-t border-gray-200">
-                          <dl>
-                            <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt className="text-sm font-medium text-gray-500">Description</dt>
-                              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{tool.description}</dd>
+              <FieldArray name='notes'>
+                {({ push }) => (
+                  <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
+                    <div className="pt-3 sm:border-t sm:border-gray-200 sm:pt-5">
+                      {toolsList.length < 1 ? null :
+                        toolsList.map((tool, index) => (
+                          <div key={tool.value} className="my-5 overflow-hidden bg-white shadow sm:rounded-lg">
+                            <div className="px-4 py-5 sm:px-6">
+                              <h3 className="text-lg font-medium leading-6 text-gray-900">{tool.label}</h3>
                             </div>
-                            <div className="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt className="text-sm font-medium text-gray-500">Category</dt>
-                              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{tool.category}</dd>
+                            <div className="border-t border-gray-200">
+                              <dl>
+                                <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                  <dt className="text-sm font-medium text-gray-500">Description</dt>
+                                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{tool.description}</dd>
+                                </div>
+                                <div className="px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                  <dt className="text-sm font-medium text-gray-500">Category</dt>
+                                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{tool.category}</dd>
+                                </div>
+                                <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                  <label className="text-sm font-medium text-gray-500">Notes</label>
+                                  <Field as='textarea'
+                                    id={`note-${tool.value}`}
+                                    name={`notes[${index}]`}
+                                    rows={3}
+                                    className="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  />
+                                </div>
+                              </dl>
                             </div>
-                            <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <label className="text-sm font-medium text-gray-500">Notes</label>
-                              <Field as='textarea'
-                                id={`note-${tool.value}`}
-                                name={`note-${tool.value}`}
-                                rows={3}
-                                className="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                              />
-                            </div>
-                          </dl>
-                        </div>
-                      </div>
-                    ))
-                  }
-                </div>
-              </div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                  </div>
+                )}
+              </FieldArray>
+              
               <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
                 <div className="pt-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                   <label htmlFor="title" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">

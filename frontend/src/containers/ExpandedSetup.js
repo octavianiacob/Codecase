@@ -22,9 +22,6 @@ const ExpandedSetup = () => {
     fetchSetup();
   }, [setupID]);
 
-  console.log(setup);
-
-
   return (
     <>
       {setup ?
@@ -32,7 +29,7 @@ const ExpandedSetup = () => {
           <Summary setup={setup} />
           <ToolsList setup={setup} />
           {setup.tools.map((tool) => {
-            return(<Tool key={tool._id} tool={tool}/>)
+            return(<Tool key={tool._id} setup={setup} tool={tool}/>)
           })}
         </>
         : null}
@@ -120,7 +117,7 @@ const ToolsList = ({ setup }) => {
   );
 }
 
-const Tool = ({tool}) => {
+const Tool = ({setup, tool}) => {
   return(
     <div className="m-10 overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:px-6">
@@ -139,7 +136,7 @@ const Tool = ({tool}) => {
           <div className="px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Notes</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {tool.notes}
+              {setup.notes[setup.tools.indexOf(tool)]}
             </dd>
           </div>
         </dl>
@@ -147,12 +144,5 @@ const Tool = ({tool}) => {
     </div>
   );
 }
-
-
-
-
-
-
-
 
 export default ExpandedSetup;

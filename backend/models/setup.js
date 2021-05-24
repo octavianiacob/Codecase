@@ -8,7 +8,8 @@ const setupSchema = new Schema({
   usersThatLiked: [{ type: mongoose.Types.ObjectId, required: true, ref: 'User' }],
   description: { type: String },
   tools: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Tool' }],
-  notes: [{ type: mongoose.Types.ObjectId, ref: 'Note' }]
+  notes: [{ type: String }]
+  //notes: [{ type: mongoose.Types.ObjectId, ref: 'Note' }]
 
 }, { timestamps: true });
 
