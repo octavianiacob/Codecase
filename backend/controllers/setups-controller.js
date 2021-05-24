@@ -2,6 +2,7 @@ const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const Setup = require('../models/setup');
 const User = require('../models/user');
+const Note = require('../models/note');
 const mongoose = require('mongoose');
 
 const getAllSetups = async (req, res, next) => {
