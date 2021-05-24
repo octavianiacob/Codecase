@@ -41,6 +41,10 @@ const NewSetup = () => {
     }
   }
 
+  const removeTool = (index) => {
+    console.log(toolsList[index]);
+    setToolsList(toolsList.filter(item => item !== toolsList[index]));
+  }
   return (
     <>
       <Formik
@@ -54,10 +58,9 @@ const NewSetup = () => {
 
         onSubmit={(values) => {
           values.tools = toolsList.map((tool => tool.value));
-          console.log(values);
           axios.post(`/api/setups`, values);
           dispatch(fetchUser());
-          //window.location.href = '/dashboard';
+          window.location.href = '/dashboard';
         }}
       >
         <Form className="max-w-6xl px-5 m-10 mx-auto space-y-8 divide-y divide-gray-200">
@@ -105,14 +108,26 @@ const NewSetup = () => {
                 <p className="max-w-2xl mt-1 text-sm text-gray-500">Add all apps, tools, programming languages, frameworks and libraries you use in development</p>
               </div>
               <FieldArray name='notes'>
-                {({ push }) => (
+                {({remove}) => (
                   <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
                     <div className="pt-3 sm:border-t sm:border-gray-200 sm:pt-5">
                       {toolsList.length < 1 ? null :
                         toolsList.map((tool, index) => (
                           <div key={tool.value} className="my-5 overflow-hidden bg-white shadow sm:rounded-lg">
-                            <div className="px-4 py-5 sm:px-6">
+                            <div className="flex justify-between px-4 py-5 sm:px-6">
                               <h3 className="text-lg font-medium leading-6 text-gray-900">{tool.label}</h3>
+                              <button 
+                                type='button' 
+                                onClick={() => {
+                                  remove(index);
+                                  removeTool(index);
+                                }} 
+                                className="text-gray-500 hover:text-red-500"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
                             </div>
                             <div className="border-t border-gray-200">
                               <dl>
