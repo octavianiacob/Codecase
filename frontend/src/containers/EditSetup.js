@@ -4,14 +4,32 @@ import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, fetchUser } from '../slices/userSlice';
 import axios from 'axios';
 import Select from 'react-select';
+import { useParams, Link } from 'react-router-dom';
 
-const NewSetup = () => {
+const EditSetup = () => {
+  const setupID = useParams().setupID;
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
 
+  const [prevData, setPrevData] = useState({});
   const [tools, setTools] = useState([]);
   const [toolsList, setToolsList] = useState([]);
+  const [toolsListIDs, setToolsListIDs] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: null, label: null });
+
+  useEffect(() => {
+    const fetchPrevData = async () => {
+      try {
+        const req = await axios.get(`/api/setups/${setupID}`);
+        setPrevData(req.data.setup);
+        setToolsList(req.data.setup.tools);
+        setToolsListIDs(req.data.setup.tools.map(t => t._id));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchPrevData();
+  }, [setupID]);
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -23,7 +41,7 @@ const NewSetup = () => {
       }
     }
     fetchTools();
-  }, [tools]);
+  }, []);
 
   let options = [];
 
@@ -44,20 +62,22 @@ const NewSetup = () => {
   const removeTool = (index) => {
     setToolsList(toolsList.filter(item => item !== toolsList[index]));
   }
+  
+  let initialValues = {
+    title: prevData?.title,
+    description: prevData.description,
+    creator: user._id,
+    tools: toolsListIDs,
+    notes: prevData.notes,
+  }
   return (
     <>
       <Formik
-        initialValues={{
-          title: '',
-          description: '',
-          creator: user._id,
-          tools: [],
-          notes: [],
-        }}
-
+        enableReinitialize
+        initialValues={initialValues}
         onSubmit={(values) => {
-          values.tools = toolsList.map((tool => tool.value));
-          axios.post(`/api/setups`, values);
+          values.tools = toolsList.map((tool => tool.value || tool.id));
+          axios.patch(`/api/setups/${setupID}`, values);
           dispatch(fetchUser());
           window.location.href = '/dashboard';
         }}
@@ -93,6 +113,7 @@ const NewSetup = () => {
                     <Field as='textarea'
                       id="description"
                       name="description"
+                      placeholder={`${prevData.description}`}
                       rows={3}
                       className="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -107,20 +128,20 @@ const NewSetup = () => {
                 <p className="max-w-2xl mt-1 text-sm text-gray-500">Add all apps, tools, programming languages, frameworks and libraries you use in development</p>
               </div>
               <FieldArray name='notes'>
-                {({remove}) => (
+                {({ remove }) => (
                   <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
                     <div className="pt-3 sm:border-t sm:border-gray-200 sm:pt-5">
                       {toolsList.length < 1 ? null :
                         toolsList.map((tool, index) => (
-                          <div key={tool.value} className="my-5 overflow-hidden bg-white shadow sm:rounded-lg">
+                          <div key={tool.value || tool._id} className="my-5 overflow-hidden bg-white shadow sm:rounded-lg">
                             <div className="flex justify-between px-4 py-5 sm:px-6">
-                              <h3 className="text-lg font-medium leading-6 text-gray-900">{tool.label}</h3>
-                              <button 
-                                type='button' 
+                              <h3 className="text-lg font-medium leading-6 text-gray-900">{tool.label || tool.title}</h3>
+                              <button
+                                type='button'
                                 onClick={() => {
                                   remove(index);
                                   removeTool(index);
-                                }} 
+                                }}
                                 className="text-gray-500 hover:text-red-500"
                               >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -144,6 +165,7 @@ const NewSetup = () => {
                                     id={`note-${tool.value}`}
                                     name={`notes[${index}]`}
                                     rows={3}
+                                    placeholder={prevData.notes[index]}
                                     className="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                   />
                                 </div>
@@ -156,7 +178,7 @@ const NewSetup = () => {
                   </div>
                 )}
               </FieldArray>
-              
+
               <div className="mt-6 space-y-6 sm:mt-5 sm:space-y-5">
                 <div className="pt-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                   <label htmlFor="title" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
@@ -187,12 +209,12 @@ const NewSetup = () => {
           </div>
           <div className="pt-5">
             <div className="flex justify-end">
-              <a
-                href='/dashboard'
+              <Link
+                to='/dashboard'
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Cancel
-              </a>
+              </Link>
               <button
                 type="submit"
                 className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -207,4 +229,4 @@ const NewSetup = () => {
   )
 }
 
-export default NewSetup;
+export default EditSetup;

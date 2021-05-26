@@ -11,6 +11,7 @@ import UserProfile from './containers/UserProfile';
 import ExpandedSetup from './containers/ExpandedSetup';
 import MyProfile from './containers/MyProfile';
 import NewSetup from './containers/NewSetup';
+import EditSetup from './containers/EditSetup';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -34,8 +35,8 @@ const App = () => {
 						: 
 					<Redirect to='/' />}
 					<Route exact path='/profile' component={MyProfile} />
-					{/* <Route exact path='/settings' component={Settings} /> */}
 					<Route exact path='/new' component={NewSetup} />
+					<Route path='/edit/:setupID' component={EditSetup} />
 					<Route path='/s/:setupID' component={ExpandedSetup} />
 					<Route path='/u/:userID' component={UserProfile} />
 					<Redirect to='/' />

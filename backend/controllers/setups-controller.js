@@ -125,7 +125,7 @@ const updateSetup = async (req, res, next) => {
     console.log(errors);
     throw new HttpError('Invalid input data', 422);
   }
-  const { title, lastUpdate } = req.body;
+  const { title, description, tools, notes } = req.body;
   const setupID = req.params.sid;
 
   let setup;
@@ -144,7 +144,9 @@ const updateSetup = async (req, res, next) => {
   }
 
   setup.title = title;
-  setup.lastUpdate = lastUpdate;
+  setup.description = description;
+  setup.tools = tools;
+  setup.notes = notes;
 
   try {
     await setup.save();
