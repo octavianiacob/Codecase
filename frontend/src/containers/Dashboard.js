@@ -37,7 +37,7 @@ const Dashboard = () => {
 		}
 		fetchSetups();
 	}, [user]);
-
+	console.log(userSetups);
 	return (
 		<>
 			<Header />
@@ -46,7 +46,7 @@ const Dashboard = () => {
 					{userSetups.length === 0 ? <Card>You have not created any setups.</Card> :
 						<SetupsTable isEditable title='My Setups' setups={userSetups} user={user} /> }
 					{likedSetups.length === 0 ? <Card>You have no liked setups.</Card> :
-					<SetupsTable title='Liked Setups' setups={likedSetups} user={user} /> }
+						<SetupsTable title='Liked Setups' setups={likedSetups} user={user} /> }
 				</>
 			}
 			{error && <div>{error}</div>}
@@ -177,7 +177,7 @@ const SetupRow = ({ setup, isEditable, user }) => {
 				</div>
 			</td>
 			<td className="px-6 py-4 whitespace-nowrap">
-				<Link to={`/u/${setup?.creator}`} className="text-sm text-blue-500">{creator && creator.username}</Link>
+				<Link to={`/u/${setup?.creator.id}`} className="text-sm text-blue-500">{setup.creator && setup.creator.username || creator && creator.username}</Link>
 			</td>
 			<td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{new Date(setup.updatedAt).toDateString()}</td>
 			<td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{setup.likes}</td>

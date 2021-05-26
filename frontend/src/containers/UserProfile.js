@@ -1,33 +1,73 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
+
 import SetupsList from '../components/SetupsList';
 import UserInfo from '../components/UserInfo';
+import Spinner from '../components/Spinner';
+import Pagination from '../components/Pagination';
 
-import {useParams} from 'react-router-dom';
 
 const UserProfile = () => {
-  const USER = { id: 'u1', firstName: 'Octavian', lastName: 'Iacob', setupsCount:'4', followersCount:'15', totalLikes:'24', username: 'Octavzz', photoURL:'https://scontent.fias1-1.fna.fbcdn.net/v/t1.6435-9/117289039_1666071473557930_2596848064091456275_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Yt09tgt6O-0AX_Ru0dU&_nc_ht=scontent.fias1-1.fna&oh=c240dde7a6581d4fe3ded9811b3a261c&oe=60947BC3'}
-
-  //Hardcoded sample data
-  const SETUPS = [
-    { id: 's1', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's2', title: 'C++ Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'JohnDoe', languagesList: ['C++', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's3', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's4', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'JohnDoe', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's5', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's6', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] },
-    { id: 's7', title: 'MERN Stack Development Setup', lastUpdate: 'Apr 3 2021', likes: 21, username: 'Octavzz', languagesList: ['HTML', 'CSS', 'JavaScript', 'React', 'Node', 'Express', 'MongoDB', 'TailwindCSS'], toolsList: ['VSCode', 'Chrome', 'Sizzy', 'iTerm2', 'GitHub Desktop'] }
-  ];
-  //const EMPTYSETUPS = [];
 
   const userID = useParams().userID;
-  console.log(userID);
-  const filteredSetups = SETUPS.filter(setup => setup.username === USER.username);
-  return ( 
+  const [user, setUser] = useState([]);
+  const [setups, setSetups] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [setupsPerPage] = useState(9);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const req = await axios.get(`/api/users/${userID}`);
+        setUser(req.data.user);
+        setLoading(false);
+      } catch (err) {
+        setError(err.response.data.message);
+      }
+    }
+    fetchUser();
+  }, [userID]);
+
+  useEffect(() => {
+    const fetchSetups = async () => {
+      try {
+        setLoading(true);
+        const req = await axios.get(`/api/setups/user/${userID}`);
+        setSetups(req.data.setups);
+        setLoading(false);
+      } catch (err) {
+        setError(err.response.data.message);
+      }
+    }
+    fetchSetups();
+  }, [userID]);
+
+  const indexOfLastSetup = currentPage * setupsPerPage;
+  const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
+  const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // console.log(user);
+  // console.log(setups);
+  console.log(currentSetups);
+
+  return (
     <>
-      <UserInfo userData={USER}/>
-      <SetupsList items={filteredSetups} />
+      {!setups ? <Spinner /> :
+        <>
+          <UserInfo user={user} />
+          <SetupsList setups={currentSetups} loading={loading} />
+          <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+        </>
+      }
     </>
-   );
+  );
 }
- 
+
 export default UserProfile;

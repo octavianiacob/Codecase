@@ -2,6 +2,7 @@ import Setup from './Setup';
 import Card from './Card';
 import Spinner from './Spinner';
 
+
 const SetupsList = ({ setups, loading }) => {
 
   if (setups.length === 0) {
@@ -37,6 +38,7 @@ const SetupsList = ({ setups, loading }) => {
                       likes={setup.likes}
                       usersThatLiked={setup.usersThatLiked}
                       creator={setup.creator.username}
+                      creatorID={setup.creator.id}
                       tools={setup.tools}
                     />
                   );

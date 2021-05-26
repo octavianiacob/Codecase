@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import Card from './Card';
 
-const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator, tools }) => {
+const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator, creatorID, tools }) => {
 
 	const dispatch = useDispatch();
 	const { user } = useSelector(userSelector);
@@ -40,7 +40,7 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 						<span>
 							Created by
           		</span>
-						<Link to={`/u/${creator}`}>
+						<Link to={`/u/${creatorID}`}>
 							<span className='text-blue-600'>
 								@{creator}
 							</span>

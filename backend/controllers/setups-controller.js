@@ -53,7 +53,9 @@ const getSetupsByUserID = async (req, res, next) => {
 
   let setups;
   try {
-    setups = await Setup.find({ creator: userID });
+    setups = await Setup.find({ creator: userID })
+      .populate({ path: 'creator', select: 'username' })
+      .populate('tools')
   } catch (err) { //If request is not valid
     // return next(
     //   new HttpError('Error on getSetupsByUserID', 500)
