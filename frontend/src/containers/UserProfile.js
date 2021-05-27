@@ -53,10 +53,6 @@ const UserProfile = () => {
   const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // console.log(user);
-  // console.log(setups);
-  console.log(currentSetups);
-
   return (
     <>
       {!setups ? <Spinner /> :

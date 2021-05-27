@@ -27,7 +27,6 @@ const Explore = () => {
   const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
   const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  console.log(currentSetups);
   return (
     <>
       {!setups ? <Spinner/> :

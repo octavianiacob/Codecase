@@ -37,7 +37,6 @@ const Dashboard = () => {
 		}
 		fetchSetups();
 	}, [user]);
-	console.log(userSetups);
 	return (
 		<>
 			<Header />
