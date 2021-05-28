@@ -1,4 +1,4 @@
-import hero from '../assets/hero-placeholder.png';
+import hero from '../assets/hero.png';
 
 import { Link } from 'react-router-dom';
 

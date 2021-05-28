@@ -1,6 +1,6 @@
 import Card from './Card';
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user, noAbout }) => {
 
   return (
     <Card className='m-3 sm:m-0'>
@@ -32,19 +32,21 @@ const UserInfo = ({ user }) => {
             </a>
           </div>
         </div>
-        <About user={user}/>
+        {noAbout ? null :
+          <About user={user} />
+        }
       </div>
     </Card>
   );
 }
 
-const About = ({user}) => {
-  return ( 
+const About = ({ user }) => {
+  return (
     <div className='mt-10'>
       <h2 className='pb-5 text-lg font-medium'>About me</h2>
       <p className='block w-full p-5 mt-1 bg-gray-100 border-gray-300 rounded shadow-sm sm:text-sm'>{user.about}</p>
     </div>
-   );
+  );
 }
 
 export default UserInfo;

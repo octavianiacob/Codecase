@@ -4,18 +4,28 @@ import { fetchUser, userSelector } from '../slices/userSlice';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 
+import UserInfo from '../components/UserInfo';
+
 const MyProfile = () => {
-  //Initialize the redux hook
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
-  //dispatch thunk when component first mounts
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch]);
   
+  let initialValues = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    country: user.country,
+    website: user.website,
+    github: user.github,
+    about: user.about
+  }
 
   return (
     <>
+      <UserInfo user={user} noAbout/>
       <div className='p-5 mx-auto sm:p-20 xl:max-w-5xl'>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -27,20 +37,11 @@ const MyProfile = () => {
             </div>
           </div>
           <Formik
-            initialValues={{
-              firstName: '',
-              lastName: '',
-              username: '',
-              country: '',
-              website: '',
-              github: '',
-              about: '',
-            }}
-
+            enableReinitialize
+            initialValues={initialValues}
             onSubmit={ (values, { resetForm }) => {
               console.log(values);
               axios.patch(`/api/users/${user?._id}`, values);
-              resetForm();
             }}
           >
             <div className="mt-5 md:mt-0 md:col-span-2">
