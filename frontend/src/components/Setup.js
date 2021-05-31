@@ -64,16 +64,16 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 				<div className='mt-3'>
 					<p className='font-semibold'>Tools and Technologies used:</p>
 					<div className='h-20'>
-						{tools.slice(0, 8).map(tool => {
+						{tools.slice(0, 5).map(tool => {
 							return (
 								<button key={tool._id} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
 									{tool.title}
 								</button>
 							);
 						})}
-						{tools.length <= 8 ? null :
+						{tools.length <= 5 ? null :
 							<Link to={`/s/${id}`} type="button" className={`mx-1 mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
-								...
+								+{tools.length - 5} more
 							</Link>
 						}
 					</div>
