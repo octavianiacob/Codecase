@@ -33,11 +33,6 @@ const Explore = () => {
 
   useEffect(() => {
     const sortArray = type => {
-      const types = {
-        updatedAt: 'updatedAt',
-        likes: 'likes'
-      };
-      const sortProperty = types[type];
       let sorted = [];
       if(type === 'updatedAt') {
         sorted = [...currentSetups].sort((a, b) => {
@@ -53,6 +48,7 @@ const Explore = () => {
     };
 
     sortArray(sortType);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, setups]);
 
   return (

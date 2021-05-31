@@ -69,7 +69,7 @@ const EditSetup = () => {
   };
 
   let initialValues = {
-    title: prevData?.title,
+    title: prevData.title || '',
     description: prevData.description,
     creator: user._id,
     tools: toolsListIDs,
@@ -135,64 +135,64 @@ const EditSetup = () => {
                       {toolsList.length < 1
                         ? null
                         : toolsList.map((tool, index) => (
-                            <div
-                              key={tool.value || tool._id}
-                              className='my-5 overflow-hidden bg-white shadow sm:rounded-lg'>
-                              <div className='flex justify-between px-4 py-5 sm:px-6'>
-                                <h3 className='text-lg font-medium leading-6 text-gray-900'>
-                                  {tool.label || tool.title}
-                                </h3>
-                                <button
-                                  type='button'
-                                  onClick={() => {
-                                    remove(index);
-                                    removeTool(index);
-                                  }}
-                                  className='text-gray-500 hover:text-red-500'>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    className='w-6 h-6'
-                                    fill='none'
-                                    viewBox='0 0 24 24'
-                                    stroke='currentColor'>
-                                    <path
-                                      strokeLinecap='round'
-                                      strokeLinejoin='round'
-                                      strokeWidth={2}
-                                      d='M6 18L18 6M6 6l12 12'
-                                    />
-                                  </svg>
-                                </button>
-                              </div>
-                              <div className='border-t border-gray-200'>
-                                <dl>
-                                  <div className='px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                                    <dt className='text-sm font-medium text-gray-500'>Description</dt>
-                                    <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
-                                      {tool.description}
-                                    </dd>
-                                  </div>
-                                  <div className='px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                                    <dt className='text-sm font-medium text-gray-500'>Category</dt>
-                                    <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
-                                      {tool.category}
-                                    </dd>
-                                  </div>
-                                  <div className='px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                                    <label className='text-sm font-medium text-gray-500'>Notes</label>
-                                    <Field
-                                      as='textarea'
-                                      id={`note-${tool.value}`}
-                                      name={`notes[${index}]`}
-                                      rows={3}
-                                      placeholder={prevData.notes[index]}
-                                      className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                    />
-                                  </div>
-                                </dl>
-                              </div>
+                          <div
+                            key={tool.value || tool._id}
+                            className='my-5 overflow-hidden bg-white shadow sm:rounded-lg'>
+                            <div className='flex justify-between px-4 py-5 sm:px-6'>
+                              <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                                {tool.label || tool.title}
+                              </h3>
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  remove(index);
+                                  removeTool(index);
+                                }}
+                                className='text-gray-500 hover:text-red-500'>
+                                <svg
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  className='w-6 h-6'
+                                  fill='none'
+                                  viewBox='0 0 24 24'
+                                  stroke='currentColor'>
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth={2}
+                                    d='M6 18L18 6M6 6l12 12'
+                                  />
+                                </svg>
+                              </button>
                             </div>
-                          ))}
+                            <div className='border-t border-gray-200'>
+                              <dl>
+                                <div className='px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                                  <dt className='text-sm font-medium text-gray-500'>Description</dt>
+                                  <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
+                                    {tool.description}
+                                  </dd>
+                                </div>
+                                <div className='px-4 py-5 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                                  <dt className='text-sm font-medium text-gray-500'>Category</dt>
+                                  <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
+                                    {tool.category}
+                                  </dd>
+                                </div>
+                                <div className='px-4 py-5 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                                  <label className='text-sm font-medium text-gray-500'>Notes</label>
+                                  <Field
+                                    as='textarea'
+                                    id={`note-${tool.value || tool._id}`}
+                                    name={`notes[${index}]`}
+                                    rows={3}
+                                    placeholder={prevData.notes[index]}
+                                    className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                                  />
+                                </div>
+                              </dl>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}

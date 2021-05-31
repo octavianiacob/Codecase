@@ -37,6 +37,7 @@ const Dashboard = () => {
 		}
 		fetchSetups();
 	}, [user]);
+
 	return (
 		<>
 			<Header />
@@ -132,21 +133,7 @@ const SetupsTable = ({ isEditable, title, setups, user }) => {
 }
 
 const SetupRow = ({ setup, isEditable, user }) => {
-	const [creator, setCreator] = useState();
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		const fetchCreator = async () => {
-			try {
-				const res = await fetch(`/api/users/${setup?.creator}`);
-				const data = await res.json();
-				setCreator(data.user);
-			} catch (err) {
-				console.log(err);
-			}
-		}
-		fetchCreator();
-	}, [setup?.creator]);
 
 	const unlikeSetup = async () => {
 		if (user) {
@@ -158,7 +145,8 @@ const SetupRow = ({ setup, isEditable, user }) => {
 	}
 
 	const deleteSetup = async () => {
-		if (user && user._id === creator._id) {
+		console.log('USER: ', user);
+		if (setup.creator._id === user._id) {
 			const req = await axios.delete(`/api/setups/${setup._id}`);
 			if (req.data.messages === 'Setup deleted.') {
 				dispatch(fetchUser());
@@ -176,7 +164,7 @@ const SetupRow = ({ setup, isEditable, user }) => {
 				</div>
 			</td>
 			<td className="px-6 py-4 whitespace-nowrap">
-				<Link to={`/u/${setup?.creator.id}`} className="text-sm text-blue-500">{setup.creator && setup.creator.username || creator && creator.username}</Link>
+				<Link to={`/u/${setup.creator._id}`} className="text-sm text-blue-500">{setup.creator.username}</Link>
 			</td>
 			<td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{new Date(setup.updatedAt).toDateString()}</td>
 			<td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{setup.likes}</td>

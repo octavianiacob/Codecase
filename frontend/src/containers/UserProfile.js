@@ -16,7 +16,6 @@ const UserProfile = () => {
   const [user, setUser] = useState([]);
   const [setups, setSetups] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [setupsPerPage] = useState(9);
 
@@ -28,7 +27,7 @@ const UserProfile = () => {
         setUser(req.data.user);
         setLoading(false);
       } catch (err) {
-        setError(err.response.data.message);
+        console.log(err);
       }
     }
     fetchUser();
@@ -42,7 +41,7 @@ const UserProfile = () => {
         setSetups(req.data.setups);
         setLoading(false);
       } catch (err) {
-        setError(err.response.data.message);
+        console.log(err);
       }
     }
     fetchSetups();

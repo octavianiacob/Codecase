@@ -274,7 +274,8 @@ const getLikedSetupsByUserID = async (req, res, next) => {
 
   let likedSetups;
   try {
-    likedSetups = await Setup.find({ usersThatLiked: userID });
+    likedSetups = await Setup.find({ usersThatLiked: userID })
+      .populate({ path: 'creator', select: 'username' });
   } catch (err) { //If request is not valid
     return next(
       new HttpError('Error on getSetupsByUserID', 500)

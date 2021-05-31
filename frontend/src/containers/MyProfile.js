@@ -40,7 +40,6 @@ const MyProfile = () => {
             enableReinitialize
             initialValues={initialValues}
             onSubmit={ (values, { resetForm }) => {
-              console.log(values);
               axios.patch(`/api/users/${user?._id}`, values);
             }}
           >

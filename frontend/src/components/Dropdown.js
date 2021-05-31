@@ -1,5 +1,4 @@
 const Dropdown = ({id, name, onChange, options, label, className}) => {
-  let key = 300;
   return ( 
     <div className={`${className}`}>
       <label className="block text-sm font-medium text-gray-700">{label}</label>
