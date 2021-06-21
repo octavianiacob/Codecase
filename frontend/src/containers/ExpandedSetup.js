@@ -25,13 +25,13 @@ const ExpandedSetup = () => {
   return (
     <>
       {setup ?
-        <>
+        <div className='max-w-5xl mx-auto'>
           <Summary setup={setup} />
           <ToolsList setup={setup} />
           {setup.tools.map((tool) => {
             return(<Tool key={tool._id} setup={setup} tool={tool}/>)
           })}
-        </>
+        </div>
         : null}
     </>
   );

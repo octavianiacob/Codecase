@@ -23,8 +23,8 @@ const SetupsList = ({ setups, loading }) => {
   return (
     <>
       {loading ? <Spinner /> :
-        <section className='min-h-screen mb-auto'>
-          <div className='relative px-4 pb-20 bg-offwhite sm:px-6 lg:pb-28 lg:px-8'>
+        <section className='mb-28'>
+          <div className='relative px-4 pb-20 bg-offwhite sm:px-6 lg:pb-2 lg:px-8'>
             <div className='relative mx-auto max-w-7xl'>
               <div className='grid max-w-lg gap-5 mx-auto mt-12 lg:grid-cols-3 lg:max-w-none'>
                 {setups.map(setup => {

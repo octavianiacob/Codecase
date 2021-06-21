@@ -46,6 +46,7 @@ const Searchbar = () => {
               isSearchable
               isClearable
               options={setupsOptions}
+              placeholder="Search..."
               components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
               className='block pl-3 text-base border-gray-300 rounded-md lg:pr-10 sm:w-48 md:w-64 lg:w-80 xl:w-96 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' />
           </div>

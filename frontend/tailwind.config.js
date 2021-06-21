@@ -13,6 +13,9 @@ module.exports = {
 				teal: colors.teal,
 				cyan: colors.cyan,
 				lightBlue: colors.lightBlue,
+				orange: colors.orange,
+				lime: colors.lime,
+				pink: colors.pink
 			},
 			fontFamily: {
 				Roboto: ['Roboto', 'sans-serif'],

@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { Formik, Field, FieldArray, Form } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, fetchUser } from '../slices/userSlice';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Select from 'react-select';
 
 const NewSetup = () => {
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
+  let history = useHistory();
 
   const [tools, setTools] = useState([]);
   const [toolsList, setToolsList] = useState([]);
@@ -59,7 +61,7 @@ const NewSetup = () => {
           values.tools = toolsList.map((tool => tool.value));
           axios.post(`/api/setups`, values);
           dispatch(fetchUser());
-          window.location.href = '/dashboard';
+          history.push(`/dashboard`)
         }}
       >
         <Form className="max-w-6xl px-5 m-10 mx-auto space-y-8 divide-y divide-gray-200">

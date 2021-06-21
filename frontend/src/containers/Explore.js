@@ -34,12 +34,12 @@ const Explore = () => {
   useEffect(() => {
     const sortArray = type => {
       let sorted = [];
-      if(type === 'updatedAt') {
+      if (type === 'updatedAt') {
         sorted = [...currentSetups].sort((a, b) => {
           return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
         });
       }
-      else if(type === 'likes') {
+      else if (type === 'likes') {
         sorted = [...currentSetups].sort((a, b) => {
           return b.likes - a.likes;
         });
@@ -48,7 +48,7 @@ const Explore = () => {
     };
 
     sortArray(sortType);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, setups]);
 
   return (
@@ -67,7 +67,7 @@ const Explore = () => {
                     label='Sort by'
                     id='date'
                     name='date'
-                    options={[{text: 'Last Updated', value: 'updatedAt'}, {text: 'Most likes', value: 'likes'}]}
+                    options={[{ text: 'Last Updated', value: 'updatedAt' }, { text: 'Most likes', value: 'likes' }]}
                     onChange={(e) => setSortType(e.target.value)}
                   />
                 </div>
@@ -75,12 +75,14 @@ const Explore = () => {
             </div>
           </Card>
           <SetupsList setups={sortedSetups} loading={loading} />
-          <Pagination
-            setupsPerPage={setupsPerPage}
-            totalSetups={setups.length}
-            currentPage={currentPage}
-            paginate={paginate}
-          />
+          <nav className='relative pt-10'>
+            <Pagination
+              setupsPerPage={setupsPerPage}
+              totalSetups={setups.length}
+              currentPage={currentPage}
+              paginate={paginate}
+            />
+          </nav>
         </>
       )}
     </>
