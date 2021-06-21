@@ -5,7 +5,7 @@ const Pagination = ({ setupsPerPage, totalSetups, currentPage, paginate }) => {
     pageNumbers.push(i);
   }
   return (
-    <div className='absolute inset-x-0 bottom-0'>
+    <nav className='absolute inset-x-0 bottom-0'>
       <div className="flex items-center justify-between px-4 pb-10 border-t border-gray-200 sm:px-0">
         <div className="flex flex-1 w-0 -mt-px">
           <button
@@ -44,7 +44,7 @@ const Pagination = ({ setupsPerPage, totalSetups, currentPage, paginate }) => {
           </button>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

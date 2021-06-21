@@ -26,21 +26,16 @@ const Explore = () => {
     fetchSetups();
   }, []);
 
-  const indexOfLastSetup = currentPage * setupsPerPage;
-  const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
-  const currentSetups = setups.slice(indexOfFirstSetup, indexOfLastSetup);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   useEffect(() => {
     const sortArray = type => {
       let sorted = [];
       if (type === 'updatedAt') {
-        sorted = [...currentSetups].sort((a, b) => {
+        sorted = [...setups].sort((a, b) => {
           return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
         });
       }
       else if (type === 'likes') {
-        sorted = [...currentSetups].sort((a, b) => {
+        sorted = [...setups].sort((a, b) => {
           return b.likes - a.likes;
         });
       }
@@ -51,12 +46,17 @@ const Explore = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, setups]);
 
+  const indexOfLastSetup = currentPage * setupsPerPage;
+  const indexOfFirstSetup = indexOfLastSetup - setupsPerPage;
+  const currentSetups = sortedSetups.slice(indexOfFirstSetup, indexOfLastSetup);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <>
       {!setups ? (
         <Spinner />
       ) : (
-        <>
+        <div className='relative h-screen'>
           <Card className='m-3 sm:m-0'>
             <div className='px-4 py-5 bg-white border-b border-gray-200 sm:px-6'>
               <div className='flex flex-col items-center justify-between -mt-4 -ml-4 sm:flex-row sm:items-center sm:flex-nowrap'>
@@ -74,16 +74,14 @@ const Explore = () => {
               </div>
             </div>
           </Card>
-          <SetupsList setups={sortedSetups} loading={loading} />
-          <nav className='relative pt-10'>
-            <Pagination
-              setupsPerPage={setupsPerPage}
-              totalSetups={setups.length}
-              currentPage={currentPage}
-              paginate={paginate}
-            />
-          </nav>
-        </>
+          <SetupsList setups={currentSetups} loading={loading} />
+          <Pagination
+            setupsPerPage={setupsPerPage}
+            totalSetups={setups.length}
+            currentPage={currentPage}
+            paginate={paginate}
+          />
+        </div>
       )}
     </>
   );
