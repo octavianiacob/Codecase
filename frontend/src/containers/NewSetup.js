@@ -61,7 +61,7 @@ const NewSetup = () => {
           values.tools = toolsList.map((tool => tool.value));
           axios.post(`/api/setups`, values);
           dispatch(fetchUser());
-          history.push(`/dashboard`)
+          history.push(`/`)
         }}
       >
         <Form className="max-w-6xl px-5 m-10 mx-auto space-y-8 divide-y divide-gray-200">

@@ -13,10 +13,10 @@ const Modal = (props) => {
         <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75" ref={modalRef} onClick={closeModal} />
+              <div className="absolute inset-0 bg-gray-700 opacity-75" ref={modalRef} onClick={closeModal} />
             </div>
             {/* For centering the modal contents. */}
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
+            <span className="hidden sm:h-screen sm:inline-block sm:align-middle">​</span>
             {props.children}
           </div>
         </div>

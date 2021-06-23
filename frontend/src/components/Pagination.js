@@ -1,11 +1,11 @@
 const Pagination = ({ setupsPerPage, totalSetups, currentPage, paginate }) => {
-  const pageNumbers = [];
+  const pages = [];
 
   for (let i = 1; i <= Math.ceil(totalSetups / setupsPerPage); i++) {
-    pageNumbers.push(i);
+    pages.push(i);
   }
   return (
-    <nav className='absolute inset-x-0 bottom-0'>
+    <nav className='inset-x-0 bottom-0'>
       <div className="flex items-center justify-between px-4 pb-10 border-t border-gray-200 sm:px-0">
         <div className="flex flex-1 w-0 -mt-px">
           <button
@@ -19,7 +19,7 @@ const Pagination = ({ setupsPerPage, totalSetups, currentPage, paginate }) => {
           </button>
         </div>
         <div className="hidden md:-mt-px md:flex">
-          {pageNumbers.map(number => (
+          {pages.map(number => (
             <button
               key={number}
               className={number !== currentPage ?

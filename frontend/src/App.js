@@ -26,7 +26,7 @@ const App = () => {
 	return (
 		<Router>
 			<Navbar />
-			<main className='bg-offwhite'>
+			<main className='h-full bg-offwhite'>
 				<Switch>
 					<Route exact path='/' component={Homepage} />
 					<Route exact path='/explore' component={Explore} />

@@ -4,12 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, fetchUser } from '../slices/userSlice';
 import axios from 'axios';
 import Select from 'react-select';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 
 const EditSetup = () => {
   const setupID = useParams().setupID;
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
+  let history = useHistory();
 
   const [prevData, setPrevData] = useState({});
   const [tools, setTools] = useState([]);
@@ -84,7 +85,7 @@ const EditSetup = () => {
           values.tools = toolsList.map((tool) => tool.value || tool.id);
           axios.patch(`/api/setups/${setupID}`, values);
           dispatch(fetchUser());
-          window.location.href = '/dashboard';
+          history.push(`/`)
         }}>
         <Form className='max-w-6xl px-5 m-10 mx-auto space-y-8 divide-y divide-gray-200'>
           <div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>

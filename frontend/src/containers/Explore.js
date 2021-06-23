@@ -56,7 +56,7 @@ const Explore = () => {
       {!setups ? (
         <Spinner />
       ) : (
-        <div className='relative h-screen'>
+        <div className='relative h-full'>
           <Card className='m-3 sm:m-0'>
             <div className='px-4 py-5 bg-white border-b border-gray-200 sm:px-6'>
               <div className='flex flex-col items-center justify-between -mt-4 -ml-4 sm:flex-row sm:items-center sm:flex-nowrap'>
@@ -65,8 +65,8 @@ const Explore = () => {
                   <Dropdown
                     className='mx-6 mt-5 sm:mt-0'
                     label='Sort by'
-                    id='date'
-                    name='date'
+                    id='sort'
+                    name='sort'
                     options={[{ text: 'Last Updated', value: 'updatedAt' }, { text: 'Most likes', value: 'likes' }]}
                     onChange={(e) => setSortType(e.target.value)}
                   />
