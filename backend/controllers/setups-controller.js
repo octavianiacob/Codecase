@@ -2,7 +2,6 @@ const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const Setup = require('../models/setup');
 const User = require('../models/user');
-const Note = require('../models/note');
 const mongoose = require('mongoose');
 
 const getAllSetups = async (req, res, next) => {
@@ -57,9 +56,6 @@ const getSetupsByUserID = async (req, res, next) => {
       .populate({ path: 'creator', select: 'username' })
       .populate('tools')
   } catch (err) { //If request is not valid
-    // return next(
-    //   new HttpError('Error on getSetupsByUserID', 500)
-    // );
     res.send({err: 'something went wrong'});
   }
 
@@ -291,8 +287,6 @@ const getLikedSetupsByUserID = async (req, res, next) => {
   }
   res.json({ likedSetups: likedSetups.map(setup => setup.toObject({ getters: true })) });
 };
-
-
 
 exports.getAllSetups = getAllSetups;
 exports.getSetupByID = getSetupByID;

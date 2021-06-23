@@ -97,8 +97,6 @@ const updateUser = async (req, res, next) => {
     user.about = about;
   }
 
-
-
   try {
     await user.save();
   } catch (err) { //If request is not valid
@@ -132,7 +130,6 @@ const deleteUser = async (req, res, next) => {
   }
   res.status(200).json({ messages: 'User deleted.' });
 }
-
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByID = getUserByID;

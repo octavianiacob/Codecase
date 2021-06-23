@@ -9,8 +9,6 @@ const setupSchema = new Schema({
   description: { type: String },
   tools: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Tool' }],
   notes: [{ type: String }]
-  //notes: [{ type: mongoose.Types.ObjectId, ref: 'Note' }]
-
 }, { timestamps: true });
 
 module.exports = mongoose.model('Setup', setupSchema);

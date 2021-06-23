@@ -11,7 +11,6 @@ const authRoutes = require('./routes/auth-routes');
 const setupsRoutes = require('./routes/setups-routes');
 const usersRoutes = require('./routes/users-routes');
 const toolsRoutes = require('./routes/tools-routes');
-const notesRoutes = require('./routes/notes-routes');
 const HttpError = require('./models/http-error');
 
 mongoose.connect(keys.mongoURI, {
@@ -56,11 +55,6 @@ app.use('/api/users', usersRoutes);
 // Tools routes
 //app.use('/api/tools', checkUserLoggedIn, toolsRoutes);
 app.use('/api/tools', toolsRoutes);
-
-// Notes routes
-//app.use('/api/notes', checkUserLoggedIn, notesRoutes);
-app.use('/api/notes', notesRoutes);
-
 
 //This middleware runs if a request didn't get a response
 app.use((req, res, next) => {
