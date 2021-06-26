@@ -12,6 +12,8 @@ import ExpandedSetup from './containers/ExpandedSetup';
 import MyProfile from './containers/MyProfile';
 import NewSetup from './containers/NewSetup';
 import EditSetup from './containers/EditSetup';
+import ToolProfile from './containers/ToolProfile';
+
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -36,6 +38,7 @@ const App = () => {
 					<Route exact path='/explore' component={Explore} />
 					<Route path='/s/:setupID' component={ExpandedSetup} />
 					<Route path='/u/:userID' component={UserProfile} />
+					<Route path='/t/:toolID' component={ToolProfile} />
 					{auth ?
 						<>
 							<Route exact path='/dashboard' component={Dashboard} />

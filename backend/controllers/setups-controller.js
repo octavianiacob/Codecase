@@ -288,6 +288,28 @@ const getLikedSetupsByUserID = async (req, res, next) => {
   res.json({ likedSetups: likedSetups.map(setup => setup.toObject({ getters: true })) });
 };
 
+const getSetupsByToolID = async (req, res, next) => {
+  const toolID = req.params.tid;
+  console.log(toolID)
+
+  let setups;
+  try {
+    setups = await Setup.find({'tools' : {$in: toolID}})
+      .populate({ path: 'creator', select: 'username' })
+      .populate('tools')
+  } catch (err) { //If request is not valid
+    res.send({ err: 'something went wrong' });
+  }
+
+  //If request is valid, but no setups are found
+  if (!setups) {
+    return next(
+      new HttpError(`No setups found for tool with ID ${toolID}`)
+    )
+  }
+  res.json({ setups: setups.map(setup => setup.toObject({ getters: true })) });
+}
+
 exports.getAllSetups = getAllSetups;
 exports.getSetupByID = getSetupByID;
 exports.getSetupsByUserID = getSetupsByUserID;
@@ -296,3 +318,4 @@ exports.updateSetup = updateSetup;
 exports.deleteSetup = deleteSetup;
 exports.likeSetup = likeSetup;
 exports.getLikedSetupsByUserID = getLikedSetupsByUserID;
+exports.getSetupsByToolID = getSetupsByToolID;

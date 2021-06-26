@@ -96,7 +96,7 @@ const Navbar = () => {
 				</div>
 			</div>
 			<div className={`px-6 pt-2 pb-4 md:flex md:p-0 ${isOpen ? 'block' : 'hidden'}`}>
-				{renderContent(user)};
+				{renderContent(user)}
 			</div>
 		</header>
 	);

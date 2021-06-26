@@ -21,6 +21,9 @@ router.get('/user/:uid', setupsController.getSetupsByUserID);
 // GET ALL LIKED SETUPS OF THE SPECIFIED USER
 router.get('/liked/:uid', checkUserLoggedIn, setupsController.getLikedSetupsByUserID);
 
+// GET ALL SETUPS CONTAINING THE SPECIFIED TOOL
+router.get('/tool/:tid', setupsController.getSetupsByToolID);
+
 // GET A SPECIFIC SETUP BASED ON SETUPID
 router.get('/:sid', setupsController.getSetupByID);
 

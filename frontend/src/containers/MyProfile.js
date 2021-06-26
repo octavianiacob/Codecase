@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, userSelector } from '../slices/userSlice';
 import { Formik, Field, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import UserInfo from '../components/UserInfo';
@@ -9,6 +10,7 @@ import UserInfo from '../components/UserInfo';
 const MyProfile = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
+  let history = useHistory();
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch]);
@@ -41,6 +43,7 @@ const MyProfile = () => {
             initialValues={initialValues}
             onSubmit={ (values, { resetForm }) => {
               axios.patch(`/api/users/${user?._id}`, values);
+              history.push(`/dashboard`)
             }}
           >
             <div className="mt-5 md:mt-0 md:col-span-2">

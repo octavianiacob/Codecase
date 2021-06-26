@@ -107,9 +107,9 @@ const ToolsList = ({ setup }) => {
       <div className={`mx-10 py-5`}>
         {setup.tools.map(tool => {
           return (
-            <button key={tool._id} type="button" className={`mx-1 mt-1 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
+            <Link to={`/t/${tool._id}`} key={tool._id} type="button" className={`mx-1 mt-1 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-3xl text-blueGray-900 ${colors[Math.floor(Math.random() * colors.length)]} hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}>
               {tool.title}
-            </button>
+            </Link>
           );
         })}
       </div>
