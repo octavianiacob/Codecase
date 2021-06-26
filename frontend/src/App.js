@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector, fetchUser } from './slices/userSlice';
@@ -22,7 +22,11 @@ const App = () => {
 		dispatch(fetchUser())
 	}, [dispatch]);
 
+	let auth;
 	const { user } = useSelector(userSelector);
+	if (user) {
+		Object.keys(user).length !== 0 ? auth = true : auth = false;
+	}
 	return (
 		<Router>
 			<Navbar />
@@ -30,15 +34,17 @@ const App = () => {
 				<Switch>
 					<Route exact path='/' component={Homepage} />
 					<Route exact path='/explore' component={Explore} />
-					{user ? 
-					<Route exact path='/dashboard' component={Dashboard} />
-						: 
-					<Redirect to='/' />}
-					<Route exact path='/profile' component={MyProfile} />
-					<Route exact path='/new' component={NewSetup} />
-					<Route path='/edit/:setupID' component={EditSetup} />
 					<Route path='/s/:setupID' component={ExpandedSetup} />
 					<Route path='/u/:userID' component={UserProfile} />
+					{auth ?
+						<>
+							<Route exact path='/dashboard' component={Dashboard} />
+							<Route exact path='/profile' component={MyProfile} />
+							<Route exact path='/new' component={NewSetup} />
+							<Route path='/edit/:setupID' component={EditSetup} />
+						</>
+						:
+						<Redirect to='/' />}
 					<Redirect to='/' />
 				</Switch>
 			</main>

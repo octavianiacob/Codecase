@@ -12,8 +12,6 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 	const { user } = useSelector(userSelector);
 	const [liked, setLiked] = useState(user?.likedSetups?.includes(id) ? true : false);
 
-	console.log(Object.keys(user));
-
 	const likeSetup = async (isLiked) => {
 		if (user) {
 			const req = await axios.patch(`/api/setups/like/${id}/from/${user._id}`);
