@@ -10,7 +10,9 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 
 	const dispatch = useDispatch();
 	const { user } = useSelector(userSelector);
-	const [liked, setLiked] = useState(user?.likedSetups.includes(id) ? true : false);
+	const [liked, setLiked] = useState(user?.likedSetups?.includes(id) ? true : false);
+
+	console.log(Object.keys(user));
 
 	const likeSetup = async (isLiked) => {
 		if (user) {
@@ -83,17 +85,20 @@ const Setup = ({ id, title, createdAt, updatedAt, likes, usersThatLiked, creator
 						<div className='flex justify-center mt-10 sm:mt-4'>
 							<span className="rounded-md shadow-sm">
 								<Link to={`/s/${id}`}>
-									<button type="button" className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-red-400">
+									<button type="button" className={` ${Object.keys(user).length === 0 ? "rounded-md" : "rounded-l-md"} relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-red-400`}>
 										<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 											<path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
 										</svg>
 									</button>
 								</Link>
-								<button onClick={likeSetup} type="button" className={`focus:outline-none relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium ${liked ? 'text-red-400' : 'text-gray-700'} bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-red-400`}>
-									<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-										<path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-									</svg>
-								</button>
+								{Object.keys(user).length !== 0 ?
+									<button onClick={likeSetup} type="button" className={`focus:outline-none relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium ${liked ? 'text-red-400' : 'text-gray-700'} bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-red-400`}>
+										<svg className='w-5 h-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+											<path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+										</svg>
+									</button>
+								: null}
+
 							</span>
 						</div>
 					</div>
