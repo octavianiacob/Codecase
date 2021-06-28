@@ -52,13 +52,16 @@ const ToolProfile = () => {
   const currentSetups = setups?.slice(indexOfFirstSetup, indexOfLastSetup);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  return(
+  return (
     <>
       {!setups ? <Spinner /> :
         <>
           <ToolInfo tool={tool} />
           <SetupsList setups={currentSetups} loading={loading} />
-          <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+          {setups.length === 0 ? null :
+            <Pagination setupsPerPage={setupsPerPage} totalSetups={setups.length} currentPage={currentPage} paginate={paginate} />
+          }
+
         </>
       }
     </>
